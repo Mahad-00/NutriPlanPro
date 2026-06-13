@@ -1,11 +1,22 @@
+import sys
 from flask import Blueprint, request, jsonify
 from app.auth_helper import require_auth
-from models.recommendation_engine import (
-    get_engine, predict_bmi, predict_tdee, predict_disease_risk,
-    personalized_nutrition_plan, add_rating, get_user_history, cf_recommend,
-)
 
 recommendation_bp = Blueprint('recommendation', __name__)
+
+# Lazy import: defer loading sentence-transformers/torch until first API call
+_REC_FUNCS = {
+    'get_engine', 'predict_bmi', 'predict_tdee', 'predict_disease_risk',
+    'personalized_nutrition_plan', 'add_rating', 'get_user_history', 'cf_recommend',
+}
+
+def __getattr__(name):
+    if name in _REC_FUNCS:
+        import models.recommendation_engine as _rec_engine
+        val = getattr(_rec_engine, name)
+        globals()[name] = val
+        return val
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 def err(msg, code=400):
