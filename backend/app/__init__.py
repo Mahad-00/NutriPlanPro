@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from flask import Flask, send_from_directory
 from flask_cors import CORS
@@ -6,6 +7,11 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).resolve().parent.parent / '.env')
+
+# Ensure backend/ is in sys.path so `from models.recommendation_engine` resolves
+_backend_root = str(Path(__file__).resolve().parent.parent)
+if _backend_root not in sys.path:
+    sys.path.insert(0, _backend_root)
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if not DATABASE_URL:
