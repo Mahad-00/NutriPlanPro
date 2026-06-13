@@ -106,8 +106,7 @@ def create_app():
             db.session.execute(db.text('ALTER TABLE "ContactUs" ADD COLUMN is_read BOOLEAN DEFAULT false'))
             db.session.commit()
 
-    from models.recommendation_engine import initialize as init_rec_engine
-    init_rec_engine()
+    # Recommendation engine initializes lazily on first use via get_engine()
 
     # Serve React frontend build if it exists (production)
     frontend_build = Path(__file__).resolve().parent.parent.parent / 'frontend' / 'build'
