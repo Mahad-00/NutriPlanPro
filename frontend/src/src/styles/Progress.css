@@ -1,0 +1,215 @@
+/* ── Progress Page ── */
+.progress-page {
+    padding: 24px 28px 40px;
+    background: #f1f5f9;
+    min-height: 100%;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Header */
+.progress-header {
+    margin-bottom: 20px;
+}
+.progress-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px;
+}
+.progress-header p {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ── Stat cards row (Current / Target / Change) ── */
+.progress-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 16px;
+}
+.progress-stat-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px 20px;
+}
+.progress-stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0 0 8px;
+}
+.progress-stat-label.current { color: #0ea5e9; }
+.progress-stat-label.target  { color: #0ea5e9; }
+.progress-stat-label.change  { color: #f97316; }
+
+.progress-stat-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+.progress-stat-value.negative { color: #16a34a; }
+.progress-stat-value.positive { color: #dc2626; }
+
+/* ── Middle 3-col row: Log weight | Measurements | Progress photo ── */
+.progress-middle {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+/* Shared card */
+.progress-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 20px 22px;
+}
+.progress-card h2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 16px;
+}
+
+/* Form fields */
+.progress-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 14px;
+}
+.progress-field label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #334155;
+}
+.progress-input {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 13px;
+    color: #0f172a;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    height: 40px;
+    background: #fff;
+}
+.progress-input:focus {
+    border-color: #0f766e;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.08);
+}
+
+/* Full-width teal button */
+.progress-btn-primary {
+    width: 100%;
+    background: #0f766e;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 0;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 4px;
+    transition: background 0.15s;
+}
+.progress-btn-primary:hover { background: #0d6460; }
+.progress-btn-primary:disabled {
+    background: #94a3b8;
+    cursor: default;
+}
+
+/* File input row */
+.progress-file-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.progress-file-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #334155;
+    margin-bottom: 6px;
+    display: block;
+}
+.progress-file-btn {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #475569;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.progress-file-name {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* ── Bottom logs row: Weight logs + Measurement logs ── */
+.progress-logs-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+/* ── Photos full-width card ── */
+.progress-photos-row {
+    margin-bottom: 0;
+}
+
+/* Log entry rows */
+.progress-log-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #334155;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+.progress-log-entry:last-child { border-bottom: none; }
+
+/* Empty state */
+.progress-empty {
+    border: 1.5px dashed #99f6e4;
+    border-radius: 10px;
+    padding: 32px 20px;
+    text-align: center;
+}
+.progress-empty-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f0fdfa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+}
+.progress-empty h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 4px;
+}
+.progress-empty p {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+}

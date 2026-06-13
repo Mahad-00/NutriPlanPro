@@ -1,0 +1,240 @@
+.onboardingPage {
+  min-height: 100vh;
+  background: #f7fbf8;
+  padding: 1.25rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .onboardingPage {
+    padding: 1.25rem 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .onboardingPage {
+    padding: 1.25rem 2rem;
+  }
+}
+
+.onboardingInner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.onboardingTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.onboardingHero {
+  background: #115e59;
+  color: #fff;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .onboardingHeroGrid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: 1.5rem;
+  }
+}
+
+.onboardingHeroTitle {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: normal;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.onboardingHeroDesc {
+  margin-top: 0.5rem;
+  max-width: 42rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #f0fdfa;
+}
+
+.onboardingMetrics {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .onboardingMetrics {
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 0;
+  }
+}
+
+.onboardingMetric {
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.1);
+  padding: 0.75rem;
+}
+
+.onboardingMetricIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #f0fdfa;
+}
+
+.onboardingMetricLabel {
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #f0fdfa;
+}
+
+.onboardingSection {
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+
+.onboardingSectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.onboardingSectionIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #0f766e;
+}
+
+.onboardingSectionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #020617;
+  margin: 0;
+}
+
+.onboardingGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .onboardingGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .onboardingGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.onboardingField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+  height: 100%;
+}
+
+.onboardingField input,
+.onboardingField select,
+.onboardingField textarea {
+  flex: 1;
+  box-sizing: border-box;
+}
+
+.onboardingField input,
+.onboardingField select {
+  height: 2.5rem;
+}
+
+.onboardingField input,
+.onboardingField select,
+.onboardingField textarea {
+  border-radius: 0.5rem;
+  border: 2px solid #cbd5e1;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.onboardingField input:focus,
+.onboardingField select:focus,
+.onboardingField textarea:focus {
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 1px #14b8a6;
+}
+
+.onboardingField textarea {
+  resize: vertical;
+}
+
+.onboardingError {
+  font-size: 0.8rem;
+  color: #dc2626;
+  font-weight: 400;
+}
+
+.onboardingBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .onboardingBottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.onboardingProgressLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+  margin: 0 0 0.25rem;
+}
+
+.onboardingProgressWrap {
+  width: 14rem;
+  max-width: 100%;
+}
+
+.onboardingBtn {
+  border-radius: 0.5rem;
+  background: #173B35;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.onboardingBtn:hover {
+  background: #1f4d45;
+}
+
+.onboardingBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

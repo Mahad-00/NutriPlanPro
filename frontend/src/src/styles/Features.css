@@ -1,0 +1,60 @@
+.featuresPage {
+  background: #f0fdfa;
+  padding: 4rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .featuresPage {
+    padding: 4rem 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .featuresPage {
+    padding: 4rem 2rem;
+  }
+}
+
+.featuresTitle {
+  max-width: 1280px;
+  margin: 0 auto;
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: normal;
+  color: #020617;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .featuresTitle {
+    font-size: 3rem;
+  }
+}
+
+.featuresGrid {
+  max-width: 1280px;
+  margin: 2.5rem auto 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.featureNumber {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f766e;
+}
+
+.featurePanelTitle {
+  margin-top: 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #020617;
+}
+
+.featurePanelDesc {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  color: #475569;
+}

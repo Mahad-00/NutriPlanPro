@@ -1,0 +1,120 @@
+/* ── Settings Page ── */
+.settings-page {
+    padding: 24px 28px 40px;
+    background: #f1f5f9;
+    min-height: 100%;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Header */
+.settings-header {
+    margin-bottom: 20px;
+}
+.settings-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px;
+}
+.settings-header p {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ── Top 3 badge-bar cards ── */
+.settings-badges {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+.settings-badge-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 18px 16px;
+}
+.settings-badge-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+    margin-bottom: 10px;
+}
+.settings-badge-label.green  { color: #0f766e; border-color: #0f766e; }
+.settings-badge-label.blue   { color: #3b82f6; border-color: #3b82f6; }
+.settings-badge-label.orange { color: #f97316; border-color: #f97316; }
+
+.settings-bar-track {
+    height: 5px;
+    border-radius: 999px;
+    background: #e2e8f0;
+    overflow: hidden;
+}
+.settings-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+}
+.settings-bar-fill.green  { background: #0f766e; }
+.settings-bar-fill.blue   { background: #3b82f6; }
+.settings-bar-fill.orange { background: #f97316; }
+
+/* ── Integration status card ── */
+.settings-integration-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 18px 22px;
+}
+.settings-integration-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+.settings-integration-header h2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+.settings-count-pill {
+    font-size: 12px;
+    color: #94a3b8;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 2px 10px;
+}
+
+/* ── Empty state ── */
+.settings-empty {
+    border: 1.5px dashed #99f6e4;
+    border-radius: 10px;
+    padding: 36px 20px;
+    text-align: center;
+}
+.settings-empty-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f0fdfa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+}
+.settings-empty h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 4px;
+}
+.settings-empty p {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+}

@@ -1,0 +1,440 @@
+/* ─────────────────────────────────────────────
+   Overview.css  –  NutriPlan Pro  Dashboard
+   Background: #f0fdfa  (soft mint)
+   ───────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+
+/* ── Variables ─────────────────────────────── */
+:root {
+  --dash-bg:            #f0fdfa;
+  --dash-surface:       #ffffff;
+  --dash-border:        #e2f4f0;
+  --dash-border-light:  #f5fdfb;
+  --dash-brand:         #0d9488;
+  --dash-brand-mid:     #14b8a6;
+  --dash-brand-light:   #ccfbf1;
+  --dash-text-primary:  #0f172a;
+  --dash-text-muted:    #64748b;
+  --dash-text-label:    #475569;
+  --dash-orange:        #f97316;
+  --dash-orange-light:  #fff7ed;
+  --dash-yellow:        #f59e0b;
+  --dash-yellow-light:  #fffbeb;
+  --dash-blue:          #0ea5e9;
+  --dash-blue-light:    #f0f9ff;
+  --dash-shadow-sm:     0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+  --dash-shadow-md:     0 4px 16px rgba(15,23,42,.08);
+  --dash-radius:        12px;
+  --dash-radius-sm:     8px;
+  --dash-font:          'Outfit', sans-serif;
+}
+
+/* ── Force background on every ancestor ──────
+   Covers html, body, any layout wrappers,
+   and the page div itself so nothing overrides */
+html,
+body {
+  background-color: #f1f5f9 !important;
+}
+
+/* Target common DashboardLayout wrapper patterns */
+body > #root,
+body > #root > *,
+[class*="layout"],
+[class*="Layout"],
+[class*="main"],
+[class*="Main"],
+[class*="content"],
+[class*="Content"],
+[class*="wrapper"],
+[class*="Wrapper"] {
+  background-color: #f1f5f9 !important;
+}
+
+/* ── White header / navbar ───────────────────
+   Targets every common naming pattern so the
+   rule lands regardless of the layout's class  */
+header,
+nav:not([class*="Side"]):not([class*="side"]),
+[class*="header"]:not([class*="Btn"]):not([class*="btn"]):not([class*="progress-header"]),
+[class*="Header"]:not([class*="Btn"]):not([class*="btn"]):not([class*="progress-header"]),
+[class*="navbar"],
+[class*="Navbar"],
+[class*="topbar"],
+[class*="Topbar"],
+[class*="top-bar"],
+[class*="nav-bar"],
+[class*="appbar"],
+[class*="AppBar"] {
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+/* ── Page shell ────────────────────────────── */
+.dashPage {
+  min-height: 100vh;
+  background-color: #f1f5f9 !important;
+  font-family: var(--dash-font);
+}
+
+.dashInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.75rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Stat card grid  (4 cols → 2 → 1) ─────── */
+.dashStatGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+/* ── Charts row  (2 cols) ──────────────────── */
+.dashChartRow {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1rem;
+}
+
+/* ── Section title row inside a panel ──────── */
+.dashSectionTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.dashSectionTitle h2 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--dash-text-primary);
+  margin: 0;
+}
+
+/* ── Macro list (below donut chart) ─────────── */
+.dashMacroList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin-top: 0.75rem;
+}
+
+.dashMacroRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dashFoodRowHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--dash-text-label);
+}
+
+.dashFoodRowBar {
+  width: 100%;
+}
+
+/* ── Diary + Insights  (2 cols) ─────────────── */
+.dashDiaryGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1rem;
+}
+
+/* ── Diary entry rows ────────────────────────── */
+.dashEntry {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0.625rem 0.75rem;
+  background: var(--dash-border-light);
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-radius-sm);
+}
+
+.dashEntryLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dashEntryRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.dashEntryName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--dash-text-primary);
+  margin: 0;
+}
+
+.dashEntryType {
+  font-size: 0.75rem;
+  color: var(--dash-text-muted);
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.dashEntryKcal {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--dash-brand);
+  margin: 0;
+}
+
+.dashEntryProtein {
+  font-size: 0.75rem;
+  color: var(--dash-text-muted);
+  margin: 0;
+}
+
+/* ── Insight cards ────────────────────────────── */
+.dashInsightGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dashInsight {
+  padding: 0.75rem 0.875rem;
+  background: var(--dash-brand-light);
+  border-left: 3px solid var(--dash-brand);
+  border-radius: 0 var(--dash-radius-sm) var(--dash-radius-sm) 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #134e4a;
+  line-height: 1.55;
+}
+
+/* ── Plan card ────────────────────────────────── */
+.dashPlanCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-radius);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--dash-shadow-sm);
+}
+
+.dashPlanItem {
+  flex: 1;
+  min-width: 0;
+}
+
+.dashPlanItem h3 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--dash-text-primary);
+  margin: 0 0 0.25rem;
+}
+
+.dashPlanItem p {
+  font-size: 0.8125rem;
+  color: var(--dash-text-muted);
+  margin: 0;
+}
+
+/* ── Quick links strip ────────────────────────── */
+.dashQuickLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: flex-start;
+  flex: 2;
+}
+
+.dashQuickLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.4375rem 0.875rem;
+  background: var(--dash-brand-light);
+  color: var(--dash-brand);
+  border: 1.5px solid #99f6e4;
+  border-radius: var(--dash-radius-sm);
+  font-family: var(--dash-font);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.dashQuickLink:hover {
+  background: var(--dash-brand);
+  border-color: var(--dash-brand);
+  color: #fff;
+}
+
+/* ── Side grid  (3 cols) ──────────────────────── */
+.dashSideGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+/* ── Recommended meal rows ────────────────────── */
+.dashRecMealList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dashRecMealRow {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0.5rem 0.75rem;
+  background: var(--dash-border-light);
+  border-radius: var(--dash-radius-sm);
+  border: 1px solid var(--dash-border);
+}
+
+.dashRecMealName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--dash-text-primary);
+  margin: 0;
+}
+
+.dashRecMealDetail {
+  font-size: 0.75rem;
+  color: var(--dash-text-muted);
+  margin: 0;
+}
+
+/* ── Grocery rows ─────────────────────────────── */
+.dashGroceryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: var(--dash-yellow-light);
+  border: 1px solid #fde68a;
+  border-radius: var(--dash-radius-sm);
+}
+
+.dashGroceryName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--dash-text-primary);
+}
+
+.dashGroceryQty {
+  font-size: 0.8125rem;
+  color: var(--dash-text-muted);
+}
+
+/* ── Friend posts ─────────────────────────────── */
+.dashFriendPost {
+  padding: 0.625rem 0.875rem;
+  background: var(--dash-orange-light);
+  border: 1px solid #fed7aa;
+  border-radius: var(--dash-radius-sm);
+  font-size: 0.8125rem;
+  color: #7c2d12;
+  line-height: 1.55;
+}
+
+.dashFriendName {
+  font-weight: 700;
+  color: var(--dash-orange);
+}
+
+/* ── Bottom charts row  (2 cols) ──────────────── */
+.dashBottomRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* ── "Start free" button  (green) ────────────────
+   Covers the most common class-name patterns.
+   If none match, share the component and I'll
+   target the exact class directly.              */
+.startFreeBtn,
+.start-free-btn,
+.startFree,
+.start-free,
+.btnStartFree,
+.btn-start-free,
+.ctaFree,
+.cta-free,
+.freePlanBtn,
+.free-plan-btn,
+[class*="startFree"],
+[class*="start-free"],
+[class*="StartFree"] {
+  background-color: #0f766e !important;
+  border-color:     #0f766e !important;
+  color:            #ffffff !important;
+}
+
+.startFreeBtn:hover,
+.start-free-btn:hover,
+.startFree:hover,
+.start-free:hover,
+.btnStartFree:hover,
+.btn-start-free:hover,
+.ctaFree:hover,
+.cta-free:hover,
+.freePlanBtn:hover,
+.free-plan-btn:hover,
+[class*="startFree"]:hover,
+[class*="start-free"]:hover,
+[class*="StartFree"]:hover {
+  background-color: #115e59 !important;
+  border-color:     #115e59 !important;
+}
+
+/* ── Responsive ───────────────────────────────── */
+@media (max-width: 1100px) {
+  .dashStatGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .dashSideGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .dashStatGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dashChartRow,
+  .dashDiaryGrid,
+  .dashBottomRow {
+    grid-template-columns: 1fr;
+  }
+  .dashPlanCard {
+    flex-wrap: wrap;
+  }
+  .dashSideGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .dashInner {
+    padding: 1.25rem 1rem 2rem;
+  }
+  .dashStatGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+}

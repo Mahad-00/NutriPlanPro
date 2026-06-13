@@ -1,0 +1,131 @@
+'[Errno 11002] getaddrinfo failed' thrown while requesting HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json
+Retrying in 1s [Retry 1/5].
+Traceback (most recent call last):
+  File "H:\Diet\backend\run.py", line 3, in <module>
+    app = create_app()
+  File "H:\Diet\backend\app\__init__.py", line 90, in create_app
+    init_rec_engine()
+    ~~~~~~~~~~~~~~~^^
+  File "H:\Diet\backend\models\recommendation_engine.py", line 60, in initialize
+    engine = FoodRecommendationEngine(
+        dataframe=food_df,
+        embeddings=food_embeddings,
+        embed_model_name=EMBEDDING_MODEL_NAME,
+    )
+  File "H:\Diet\backend\models\recommendation_engine.py", line 140, in __init__
+    self.embed_model = SentenceTransformer(embed_model_name)
+                       ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\sentence_transformers\util\decorators.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\sentence_transformers\sentence_transformer\model.py", line 184, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        model_name_or_path=model_name_or_path,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+        default_prompt_name=default_prompt_name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\sentence_transformers\base\model.py", line 204, in __init__
+    modules, self.module_kwargs = self._load_modules(
+                                  ~~~~~~~~~~~~~~~~~~^
+        model_name_or_path,
+        ^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+        config_kwargs=config_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\sentence_transformers\base\model.py", line 993, in _load_modules
+    return self._load_config_modules(model_name_or_path, **load_kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\sentence_transformers\base\model.py", line 1199, in _load_config_modules
+    module = module_class.load(
+        model_name_or_path,
+    ...<11 lines>...
+        backend=self.backend,
+    )
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\sentence_transformers\base\modules\transformer.py", line 1793, in load
+    return cls(model_name_or_path=model_name_or_path, **init_kwargs)
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\sentence_transformers\util\decorators.py", line 87, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\sentence_transformers\base\modules\transformer.py", line 630, in __init__
+    config, is_peft_model = self._load_config(model_name_or_path, backend, config_kwargs)
+                            ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\sentence_transformers\base\modules\transformer.py", line 1410, in _load_config
+    adapter_config_file = find_adapter_config_file(
+        model_name_or_path,
+    ...<4 lines>...
+        local_files_only=config_kwargs.get("local_files_only", False),
+    )
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\transformers\utils\peft_utils.py", line 84, in find_adapter_config_file
+    adapter_cached_filename = cached_file(
+        model_id,
+    ...<11 lines>...
+        _raise_exceptions_for_connection_errors=False,
+    )
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\transformers\utils\hub.py", line 293, in cached_file
+    file = cached_files(path_or_repo_id=path_or_repo_id, filenames=[filename], **kwargs)
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\transformers\utils\hub.py", line 527, in cached_files
+    raise e
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\transformers\utils\hub.py", line 437, in cached_files
+    hf_hub_download(
+    ~~~~~~~~~~~~~~~^
+        path_or_repo_id,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        tqdm_class=tqdm_class,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\huggingface_hub\utils\_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\huggingface_hub\file_download.py", line 1015, in hf_hub_download
+    return _hf_hub_download_to_cache_dir(
+        # Destination
+    ...<15 lines>...
+        dry_run=dry_run,
+    )
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\huggingface_hub\file_download.py", line 1148, in _hf_hub_download_to_cache_dir
+    _get_metadata_or_catch_error(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        repo_id=repo_id,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        retry_on_errors=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\huggingface_hub\file_download.py", line 1690, in _get_metadata_or_catch_error
+    metadata = get_hf_file_metadata(
+        url=url,
+    ...<4 lines>...
+        retry_on_errors=retry_on_errors,
+    )
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\huggingface_hub\utils\_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\huggingface_hub\file_download.py", line 1612, in get_hf_file_metadata
+    response = _httpx_follow_relative_redirects_with_backoff(
+        method="HEAD", url=url, headers=hf_headers, timeout=timeout, retry_on_errors=retry_on_errors
+    )
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\huggingface_hub\utils\_http.py", line 685, in _httpx_follow_relative_redirects_with_backoff
+    response = http_backoff(
+        method=method,
+    ...<3 lines>...
+        **no_retry_kwargs,
+    )
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\huggingface_hub\utils\_http.py", line 559, in http_backoff
+    return next(
+        _http_backoff_base(
+    ...<9 lines>...
+        )
+    )
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\huggingface_hub\utils\_http.py", line 467, in _http_backoff_base
+    response = client.request(method=method, url=url, **kwargs)
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\httpx\_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mahad Mustafa\AppData\Roaming\Python\Python314\site-packages\httpx\_client.py", line 901, in send
+    raise RuntimeError("Cannot send a request, as the client has been closed.")
+RuntimeError: Cannot send a request, as the client has been closed.
