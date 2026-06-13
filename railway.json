@@ -5,7 +5,7 @@
   },
   "deploy": {
     "startCommand": "cd backend && gunicorn wsgi:app --bind 0.0.0.0:$PORT --workers 4 --timeout 120 --access-logfile -",
-    "healthcheckPath": "/api/admin/analytics",
+    "healthcheckPath": "/api/health",
     "restartPolicyType": "ON_FAILURE"
   }
 }

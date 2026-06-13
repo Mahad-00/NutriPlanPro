@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import os
@@ -14,8 +14,6 @@ if _backend_root not in sys.path:
     sys.path.insert(0, _backend_root)
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
-if not DATABASE_URL:
-    raise RuntimeError('DATABASE_URL is not set in .env or environment variables.')
 
 # Railway provides DATABASE_URL with sslmode=require, ensure SSL for non-local connections
 if DATABASE_URL and 'localhost' not in DATABASE_URL and 'sslmode' not in DATABASE_URL:
@@ -29,20 +27,27 @@ def create_app():
     app = Flask(__name__)
     CORS(app)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-        'pool_size': 10,
-        'max_overflow': 20,
-        'pool_pre_ping': True,
-        'pool_recycle': 300,
-    }
+    if DATABASE_URL:
+        app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+        app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+            'pool_size': 10,
+            'max_overflow': 20,
+            'pool_pre_ping': True,
+            'pool_recycle': 300,
+        }
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'nutriplan-secret-key-change-in-prod')
+
+    # Healthcheck — no DB or auth required
+    @app.route('/api/health')
+    def health():
+        return jsonify({'status': 'ok'})
 
     # Trust Railway's proxy for correct HTTPS redirects
     app.config['PREFERRED_URL_SCHEME'] = 'https'
 
-    db.init_app(app)
+    if DATABASE_URL:
+        db.init_app(app)
 
     from app.routes.auth import auth_bp
     from app.routes.BarcodeFoods import barcode_foods_bp
@@ -79,32 +84,33 @@ def create_app():
     app.register_blueprint(contact_bp, url_prefix='/api/contact')
     app.register_blueprint(admin_bp, url_prefix='/api/admin')
 
-    with app.app_context():
-        from app.models.user import User
-        from app.models.BarcodeFood import BarcodeFood
-        from app.models.onboarding import OnboardingDetail
-        from app.models.FoodDiary import FoodDiaryEntry
-        from app.models.MealPlan import MealPlan
-        from app.models.recipe import Recipe
-        from app.models.CustomFood import CustomFood
-        from app.models.GroceryItem import GroceryItem
-        from app.models.DietRecommendation import DietRecommendation
-        from app.models.goal import Goal
-        from app.models.WorkoutRoutine import WorkoutRoutine
-        from app.models.WorkoutLog import WorkoutLog
-        from app.models.WaterLog import WaterLog
-        from app.models.WeeklyCalendar import WeeklyCalendar
-        from app.models.ProgressEntry import ProgressEntry
-        from app.models.MealScan import MealScan
-        from app.models.PasswordResetCode import PasswordResetCode
-        from app.models.ContactUs import ContactUs
-        db.create_all()
+    if DATABASE_URL:
+        with app.app_context():
+            from app.models.user import User
+            from app.models.BarcodeFood import BarcodeFood
+            from app.models.onboarding import OnboardingDetail
+            from app.models.FoodDiary import FoodDiaryEntry
+            from app.models.MealPlan import MealPlan
+            from app.models.recipe import Recipe
+            from app.models.CustomFood import CustomFood
+            from app.models.GroceryItem import GroceryItem
+            from app.models.DietRecommendation import DietRecommendation
+            from app.models.goal import Goal
+            from app.models.WorkoutRoutine import WorkoutRoutine
+            from app.models.WorkoutLog import WorkoutLog
+            from app.models.WaterLog import WaterLog
+            from app.models.WeeklyCalendar import WeeklyCalendar
+            from app.models.ProgressEntry import ProgressEntry
+            from app.models.MealScan import MealScan
+            from app.models.PasswordResetCode import PasswordResetCode
+            from app.models.ContactUs import ContactUs
+            db.create_all()
 
-        from sqlalchemy import inspect
-        inspector = inspect(db.engine)
-        if 'is_read' not in [c['name'] for c in inspector.get_columns('ContactUs')]:
-            db.session.execute(db.text('ALTER TABLE "ContactUs" ADD COLUMN is_read BOOLEAN DEFAULT false'))
-            db.session.commit()
+            from sqlalchemy import inspect
+            inspector = inspect(db.engine)
+            if 'is_read' not in [c['name'] for c in inspector.get_columns('ContactUs')]:
+                db.session.execute(db.text('ALTER TABLE "ContactUs" ADD COLUMN is_read BOOLEAN DEFAULT false'))
+                db.session.commit()
 
     # Recommendation engine initializes lazily on first use via get_engine()
 
