@@ -4,7 +4,7 @@ import {
     LayoutDashboard, Utensils, Calendar, CalendarCheck, QrCode, Camera,
     BookOpen, Apple, ShoppingCart, Salad, Sparkles, Target, Dumbbell,
     Activity, Droplets, TrendingUp, Store, Users, MessageSquare,
-    Settings, LogOut, Search, ChevronUp, ChevronDown, Leaf,
+    Settings, LogOut, Search, ChevronUp, ChevronDown, Leaf, Menu, X,
 } from 'lucide-react';
 import '../styles/DashboardLayout.css';
 
@@ -79,6 +79,11 @@ export default function DashboardLayout({ children }) {
 
             {/* ── Top bar ── */}
             <header className="dashTopBar">
+
+                {/* Hamburger menu button (mobile) */}
+                <button className="dashMenuBtn" onClick={() => setMobileOpen(prev => !prev)} aria-label="Toggle sidebar">
+                    {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+                </button>
 
                 {/* Logo block — same width as sidebar */}
                 <Link to="/dashboard" className="dashTopLogo">

@@ -102,6 +102,59 @@ def register():
     })
 
 
+@auth_bp.route('/onboarding', methods=['GET'])
+@require_auth
+def get_onboarding(user):
+    detail = OnboardingDetail.query.filter_by(email=user['email']).first()
+    if not detail:
+        return jsonify({'error': 'Onboarding not completed.'}), 404
+    return jsonify(detail.to_dict())
+
+
+@auth_bp.route('/onboarding', methods=['POST'])
+@require_auth
+def save_onboarding(user):
+    data = request.get_json()
+    if not data:
+        return jsonify({'error': 'Request body is required.'}), 400
+
+    errors = {}
+    if not data.get('age'):
+        errors['age'] = 'Age is required.'
+    if not data.get('height_cm'):
+        errors['height_cm'] = 'Height is required.'
+    if not data.get('current_weight_kg'):
+        errors['current_weight_kg'] = 'Current weight is required.'
+    if not data.get('target_weight_kg'):
+        errors['target_weight_kg'] = 'Target weight is required.'
+    if errors:
+        return jsonify({'errors': errors}), 422
+
+    detail = OnboardingDetail.query.filter_by(email=user['email']).first()
+    if not detail:
+        detail = OnboardingDetail(email=user['email'])
+        db.session.add(detail)
+
+    detail.age = int(data['age'])
+    detail.gender = data.get('gender', 'female')
+    detail.height_cm = float(data['height_cm'])
+    detail.current_weight_kg = float(data['current_weight_kg'])
+    detail.target_weight_kg = float(data['target_weight_kg'])
+    detail.goal_type = data.get('goal_type', 'lose_weight')
+    detail.activity_level = data.get('activity_level', 'moderately_active')
+    detail.dietary_preference = data.get('dietary_preference', 'balanced')
+    detail.allergies = data.get('allergies', '')
+    detail.disliked_foods = data.get('disliked_foods', '')
+    detail.preferred_cuisines = data.get('preferred_cuisines', '')
+    detail.meals_per_day = int(data.get('meals_per_day', 3))
+    detail.budget_level = data.get('budget_level', 'medium')
+    detail.cooking_time_preference = data.get('cooking_time_preference', 'moderate')
+    detail.medical_notes = data.get('medical_notes', '')
+    db.session.commit()
+
+    return jsonify(detail.to_dict())
+
+
 def send_reset_email(to_email, code):
     smtp_host = os.environ.get('SMTP_HOST', 'smtp.gmail.com')
     smtp_port = int(os.environ.get('SMTP_PORT', 587))

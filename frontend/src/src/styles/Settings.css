@@ -118,3 +118,30 @@
     color: #64748b;
     margin: 0;
 }
+
+@media (max-width: 768px) {
+    .settings-page {
+        padding: 16px 12px 32px;
+    }
+    .settings-badges {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .settings-header h1 {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .settings-page {
+        padding: 12px 8px 24px;
+    }
+    .settings-integration-card {
+        padding: 14px 16px;
+    }
+    .settings-integration-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}

@@ -436,3 +436,35 @@
   line-height: 1.5rem;
   color: #475569;
 }
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 2rem;
+  }
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+  .heroGrid {
+    padding: 2rem 0.75rem;
+    gap: 1.5rem;
+  }
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .statValue {
+    font-size: 1.25rem;
+  }
+  .overlayCards {
+    margin: -2rem 0.5rem 0;
+  }
+  .section {
+    padding: 2.5rem 0.75rem;
+  }
+  .whiteGrid {
+    padding: 0 0.75rem;
+  }
+  .faqWrap {
+    padding: 2.5rem 0.75rem;
+  }
+}

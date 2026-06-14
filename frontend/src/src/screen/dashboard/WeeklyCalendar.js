@@ -3,7 +3,7 @@ import axios from 'axios';
 import DashboardLayout from '../../Layouts/DashboardLayout';
 import { Trash2, ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ baseURL: '/api' });
 function headers() {
     const token = localStorage.getItem('token');
     return token ? { Authorization: `Bearer ${token}` } : {};

@@ -3,7 +3,7 @@ import axios from 'axios';
 import PublicLayout from '../Layouts/PublicLayout';
 import '../styles/Contact.css';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ baseURL: '/api' });
 
 export default function Contact() {
     const [data, setData] = useState({ name: '', email: '', subject: '', message: '' });

@@ -566,8 +566,7 @@
     padding: 1rem;
   }
   
-  .dr-metrics-grid,
-  .dr-rhythm-watchout {
+  .dr-metrics-grid {
     grid-template-columns: 1fr;
   }
   
@@ -579,5 +578,33 @@
   .dr-rhythm-item {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .dr-gap-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dr-gain-title {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .diet-recommender {
+    padding: 0.75rem;
+  }
+  .dr-calorie-number {
+    font-size: 1.5rem;
+  }
+  .dr-food-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .dr-food-actions {
+    flex-wrap: wrap;
+  }
+  .dr-rhythm-stats {
+    min-width: auto;
+    flex-wrap: wrap;
   }
 }

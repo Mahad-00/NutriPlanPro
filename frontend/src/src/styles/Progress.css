@@ -213,3 +213,35 @@
     color: #64748b;
     margin: 0;
 }
+
+@media (max-width: 768px) {
+    .progress-page {
+        padding: 16px 12px 32px;
+    }
+    .progress-stats {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .progress-middle {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .progress-logs-row {
+        grid-template-columns: 1fr;
+    }
+    .progress-header h1 {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .progress-page {
+        padding: 12px 8px 24px;
+    }
+    .progress-stat-value {
+        font-size: 20px;
+    }
+    .progress-card {
+        padding: 14px 16px;
+    }
+}

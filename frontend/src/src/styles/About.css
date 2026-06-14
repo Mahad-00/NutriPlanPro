@@ -73,3 +73,21 @@
   font-weight: 600;
   color: #115e59;
 }
+
+@media (max-width: 768px) {
+  .aboutTitle {
+    font-size: 1.75rem;
+  }
+  .aboutDesc {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .aboutPage {
+    padding: 2rem 0.75rem;
+  }
+  .aboutTags {
+    grid-template-columns: 1fr;
+  }
+}

@@ -161,3 +161,26 @@
   font-weight: 600;
   color: #0f172a;
 }
+
+@media (max-width: 768px) {
+  .pricingTitle {
+    font-size: 1.75rem;
+  }
+  .pricingHeader {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .pricingTable {
+    min-width: 500px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pricingPage {
+    padding: 2rem 0.75rem;
+  }
+  .pricingTableWrap {
+    margin: 1rem -0.75rem 0;
+    padding: 0 0.75rem;
+  }
+}

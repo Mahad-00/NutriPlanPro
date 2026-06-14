@@ -58,3 +58,21 @@
   line-height: 1.5rem;
   color: #475569;
 }
+
+@media (max-width: 768px) {
+  .featuresTitle {
+    font-size: 1.75rem;
+  }
+  .featuresGrid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .featuresPage {
+    padding: 2rem 0.75rem;
+  }
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+}

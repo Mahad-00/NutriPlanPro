@@ -6,7 +6,7 @@ import { Badge, Panel, ProgressBar } from '../../componenets/Ui';
 import { Activity, HeartPulse, Salad, Scale } from 'lucide-react';
 import '../../styles/Onboarding.css';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ baseURL: '/api' });
 
 const goals = [
     ['lose_weight', 'Lose weight'],
