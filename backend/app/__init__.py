@@ -115,14 +115,17 @@ def create_app():
 
         # Serve React frontend build if it exists (production)
         frontend_build = Path(__file__).resolve().parent.parent.parent / 'frontend' / 'build'
-        if frontend_build.exists():
-            @app.route('/', defaults={'path': ''})
-            @app.route('/<path:path>')
-            def serve_react(path):
+        @app.route('/', defaults={'path': ''})
+        @app.route('/<path:path>')
+        def serve_react(path):
+            if frontend_build.exists():
                 file_path = frontend_build / path
+                if not path:
+                    return send_from_directory(str(frontend_build), 'index.html')
                 if file_path.exists() and file_path.is_file():
                     return send_from_directory(str(frontend_build), path)
                 return send_from_directory(str(frontend_build), 'index.html')
+            return jsonify({'status': 'ok', 'message': 'API server running'})
 
     except Exception as exc:
         import traceback
