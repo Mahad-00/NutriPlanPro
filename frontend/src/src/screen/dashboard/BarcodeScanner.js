@@ -7,7 +7,7 @@ import { BrowserMultiFormatReader } from '@zxing/browser';
 import { CheckCircle2, ScanLine, Trash2 } from 'lucide-react';
 import '../../styles/BarcodeScanner.css';
 
-const API = axios.create({ baseURL: '/api' });
+const API = axios.create({ baseURL: 'http://localhost:5000/api' });
 function headers() {
     const token = localStorage.getItem('token');
     return token ? { Authorization: `Bearer ${token}` } : {};

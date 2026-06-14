@@ -4,7 +4,7 @@ import AdminLayout from '../../Layouts/AdminLayout';
 import '../../styles/Admin.css';
 import { Trash2, ArrowLeft, Users as UsersIcon, Mail, ClipboardList, Camera, Droplets, Target, Utensils, Apple, Search, Download, ChevronLeft, ChevronRight, Activity, Barcode, Eye, Check, X, RefreshCw, CheckSquare } from 'lucide-react';
 
-const API = axios.create({ baseURL: '/api' });
+const API = axios.create({ baseURL: 'http://localhost:5000/api' });
 function headers() {
     const t = localStorage.getItem('token');
     return t ? { Authorization: `Bearer ${t}` } : {};

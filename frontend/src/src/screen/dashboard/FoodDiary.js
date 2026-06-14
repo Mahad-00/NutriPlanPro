@@ -6,7 +6,7 @@ import InputError from '../../componenets/InputError';
 import { Copy, Plus, Trash2 } from 'lucide-react';
 import '../../styles/FoodDiary.css';
 
-const API = axios.create({ baseURL: '/api' });
+const API = axios.create({ baseURL: 'http://localhost:5000/api' });
 
 const mealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
 

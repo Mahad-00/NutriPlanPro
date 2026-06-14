@@ -5,7 +5,7 @@ import BrandLogo from '../../componenets/BrandLogo';
 import GuestLayout from '../../Layouts/GuestLayout';
 import '../../styles/ForgotPassword.css';
 
-const API = axios.create({ baseURL: '/api' });
+const API = axios.create({ baseURL: 'http://localhost:5000/api' });
 
 export default function VerifyResetCode() {
     const location = useLocation();
