@@ -4,7 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "cd backend && exec /opt/venv/bin/python -m gunicorn wsgi:app --bind 0.0.0.0:$PORT --workers 1 --preload --timeout 120 --access-logfile - --error-logfile -",
+    "startCommand": "cd backend && exec /opt/venv/bin/python -m gunicorn wsgi:app --bind 0.0.0.0:$PORT --workers 2 --timeout 60 --access-logfile - --error-logfile -",
     "healthcheckPath": "/api/health",
     "restartPolicyType": "ON_FAILURE"
   }
