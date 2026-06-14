@@ -63,11 +63,13 @@ def create_app():
                 'pool_recycle': 300,
                 'connect_args': {'connect_timeout': 5},
             }
+        else:
+            app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nutriplan.db'
+            app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'nutriplan-secret-key-change-in-prod')
         app.config['PREFERRED_URL_SCHEME'] = 'https'
 
-        if DATABASE_URL:
-            db.init_app(app)
+        db.init_app(app)
 
         from app.routes.auth import auth_bp
         from app.routes.BarcodeFoods import barcode_foods_bp
@@ -104,33 +106,32 @@ def create_app():
         app.register_blueprint(contact_bp, url_prefix='/api/contact')
         app.register_blueprint(admin_bp, url_prefix='/api/admin')
 
-        if DATABASE_URL:
-            with app.app_context():
-                from app.models.user import User
-                from app.models.BarcodeFood import BarcodeFood
-                from app.models.onboarding import OnboardingDetail
-                from app.models.FoodDiary import FoodDiaryEntry
-                from app.models.MealPlan import MealPlan
-                from app.models.recipe import Recipe
-                from app.models.CustomFood import CustomFood
-                from app.models.GroceryItem import GroceryItem
-                from app.models.DietRecommendation import DietRecommendation
-                from app.models.goal import Goal
-                from app.models.WorkoutRoutine import WorkoutRoutine
-                from app.models.WorkoutLog import WorkoutLog
-                from app.models.WaterLog import WaterLog
-                from app.models.WeeklyCalendar import WeeklyCalendar
-                from app.models.ProgressEntry import ProgressEntry
-                from app.models.MealScan import MealScan
-                from app.models.PasswordResetCode import PasswordResetCode
-                from app.models.ContactUs import ContactUs
-                db.create_all()
+        with app.app_context():
+            from app.models.user import User
+            from app.models.BarcodeFood import BarcodeFood
+            from app.models.onboarding import OnboardingDetail
+            from app.models.FoodDiary import FoodDiaryEntry
+            from app.models.MealPlan import MealPlan
+            from app.models.recipe import Recipe
+            from app.models.CustomFood import CustomFood
+            from app.models.GroceryItem import GroceryItem
+            from app.models.DietRecommendation import DietRecommendation
+            from app.models.goal import Goal
+            from app.models.WorkoutRoutine import WorkoutRoutine
+            from app.models.WorkoutLog import WorkoutLog
+            from app.models.WaterLog import WaterLog
+            from app.models.WeeklyCalendar import WeeklyCalendar
+            from app.models.ProgressEntry import ProgressEntry
+            from app.models.MealScan import MealScan
+            from app.models.PasswordResetCode import PasswordResetCode
+            from app.models.ContactUs import ContactUs
+            db.create_all()
 
-                from sqlalchemy import inspect
-                inspector = inspect(db.engine)
-                if 'is_read' not in [c['name'] for c in inspector.get_columns('ContactUs')]:
-                    db.session.execute(db.text('ALTER TABLE "ContactUs" ADD COLUMN is_read BOOLEAN DEFAULT false'))
-                    db.session.commit()
+            from sqlalchemy import inspect
+            inspector = inspect(db.engine)
+            if 'is_read' not in [c['name'] for c in inspector.get_columns('ContactUs')]:
+                db.session.execute(db.text('ALTER TABLE "ContactUs" ADD COLUMN is_read BOOLEAN DEFAULT false'))
+                db.session.commit()
 
         # Serve React frontend build
         if HAS_REACT:
