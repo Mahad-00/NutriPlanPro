@@ -1,0 +1,181 @@
+===========================================================
+ NUTRIPLAN PRO - PROJECT STRUCTURE
+===========================================================
+
+Root: H:\Diet\
+
+===========================================================
+ 1. FOLDER TREE (excluding node_modules, venv, build artifacts)
+===========================================================
+
+H:\Diet\
+├── backend\
+│   ├── app\
+│   │   ├── __init__.py              (Flask app factory)
+│   │   ├── auth_helper.py
+│   │   ├── models\                  (SQLAlchemy models)
+│   │   └── routes\                  (API route blueprints)
+│   │       ├── __init__.py
+│   │       ├── Admin.py
+│   │       ├── Auth.py              (renamed: auth.py)
+│   │       ├── BarcodeFoods.py
+│   │       ├── ContactUs.py
+│   │       ├── CustomFoods.py
+│   │       ├── DietRecommender.py
+│   │       ├── FoodDiary.py
+│   │       ├── Goals.py
+│   │       ├── GroceryList.py
+│   │       ├── MealPlans.py
+│   │       ├── MealScan.py
+│   │       ├── Progress.py
+│   │       ├── recipes.py
+│   │       ├── recommendation.py
+│   │       ├── Water.py
+│   │       ├── WeeklyCalendar.py
+│   │       └── workouts.py
+│   ├── models\
+│   │   ├── __init__.py
+│   │   ├── food_dataframe.pkl       (cached embeddings)
+│   │   ├── food_embeddings.pkl      (cached embeddings)
+│   │   ├── pakistani_foods.csv
+│   │   ├── Pakistani Foods.csv
+│   │   ├── recommendation_engine.py (SentenceTransformer-based engine)
+│   │   ├── usa_foods.csv
+│   │   └── Usa Foods.csv
+│   ├── static\
+│   ├── templates\
+│   ├── .env.example
+│   ├── requirements.txt
+│   ├── runtime.txt
+│   ├── wsgi.py                      (entry point: creates Flask app)
+│   └── Procfile                     (currently unused; Railway uses railway.json)
+├── frontend\
+│   ├── build\                       (production React build)
+│   │   ├── favicon.ico
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   └── robots.txt
+│   ├── public\
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   └── robots.txt
+│   ├── src\
+│   │   ├── App.js                   (main React component)
+│   │   ├── index.js                 (React entry point)
+│   │   ├── index.css
+│   │   ├── reportWebVitals.js
+│   │   └── src\
+│   │       ├── Layouts\
+│   │       ├── componenets\
+│   │       └── screen\
+│   ├── package.json
+│   ├── package-lock.json
+│   └── README.md
+├── railway.json                     (Railway deployment config)
+├── nixpacks.toml                    (Nixpacks build config)
+├── requirements.txt                 (Python dependencies)
+└── runtime.txt                      (Python version)
+
+===========================================================
+ 2. frontend\package.json
+===========================================================
+
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^13.5.0",
+    "@zxing/browser": "^0.2.0",
+    "@zxing/library": "^0.21.3",
+    "axios": "^1.17.0",
+    "es-toolkit": "^1.39.3",
+    "lucide-react": "^1.17.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router-dom": "^7.17.0",
+    "react-scripts": "5.0.1",
+    "recharts": "^3.8.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
+
+===========================================================
+ 3. frontend\src\index.js (React entry point)
+===========================================================
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+reportWebVitals();
+
+===========================================================
+ 4. backend\wsgi.py (Python server entry point)
+===========================================================
+
+import os, sys
+from app import create_app
+
+app = create_app()
+print(f"APP_READY pid={os.getpid()}", file=sys.stderr, flush=True)
+
+===========================================================
+ 5. DEPLOYMENT: railway.json
+===========================================================
+
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "cd backend && exec /opt/venv/bin/python -m waitress --port=$PORT wsgi:app",
+    "healthcheckPath": "/api/health",
+    "restartPolicyType": "ON_FAILURE"
+  }
+}
+
+Server: waitress (production WSGI server, pure Python)
+Startup: cd backend -> python -m waitress --port=$PORT wsgi:app
+Port: $PORT (dynamically assigned by Railway, typically 8080)

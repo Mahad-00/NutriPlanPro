@@ -24,7 +24,13 @@ db = SQLAlchemy()
 
 
 def create_app():
-    app = Flask(__name__)
+    FRONTEND_BUILD = Path(__file__).resolve().parent.parent.parent / 'frontend' / 'build'
+    HAS_REACT = (FRONTEND_BUILD / 'index.html').exists()
+
+    if HAS_REACT:
+        app = Flask(__name__, static_folder=str(FRONTEND_BUILD), static_url_path='')
+    else:
+        app = Flask(__name__)
 
     # Healthcheck — always available, even if everything else fails
     @app.route('/api/health')
@@ -126,19 +132,23 @@ def create_app():
                     db.session.execute(db.text('ALTER TABLE "ContactUs" ADD COLUMN is_read BOOLEAN DEFAULT false'))
                     db.session.commit()
 
-        # Serve React frontend build if it exists (production)
-        frontend_build = Path(__file__).resolve().parent.parent.parent / 'frontend' / 'build'
-        @app.route('/', defaults={'path': ''})
-        @app.route('/<path:path>')
-        def serve_react(path):
-            if frontend_build.exists():
-                file_path = frontend_build / path
-                if not path:
-                    return send_from_directory(str(frontend_build), 'index.html')
+        # Serve React frontend build
+        if HAS_REACT:
+            @app.route('/')
+            def serve_react():
+                return send_from_directory(FRONTEND_BUILD, 'index.html')
+
+            @app.route('/<path:path>')
+            def serve_static_react(path):
+                file_path = FRONTEND_BUILD / path
                 if file_path.exists() and file_path.is_file():
-                    return send_from_directory(str(frontend_build), path)
-                return send_from_directory(str(frontend_build), 'index.html')
-            return jsonify({'status': 'ok', 'message': 'API server running'})
+                    return send_from_directory(FRONTEND_BUILD, path)
+                return send_from_directory(FRONTEND_BUILD, 'index.html')
+        else:
+            @app.route('/', defaults={'path': ''})
+            @app.route('/<path:path>')
+            def serve_fallback(path):
+                return jsonify({'status': 'ok', 'message': 'API server running'})
 
     except Exception as exc:
         import traceback
