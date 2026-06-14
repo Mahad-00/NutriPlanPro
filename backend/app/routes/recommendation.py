@@ -12,10 +12,18 @@ _REC_FUNCS = {
 
 def __getattr__(name):
     if name in _REC_FUNCS:
-        import models.recommendation_engine as _rec_engine
-        val = getattr(_rec_engine, name)
-        globals()[name] = val
-        return val
+        try:
+            import models.recommendation_engine as _rec_engine
+            val = getattr(_rec_engine, name)
+            globals()[name] = val
+            return val
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            def _err(*a, **kw):
+                return {"error": f"Recommendation engine unavailable: {e}"}, 503
+            globals()[name] = _err
+            return _err
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 

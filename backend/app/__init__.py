@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from flask import Flask, send_from_directory, jsonify
+from flask import Flask, request, send_from_directory, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import os
@@ -30,6 +30,19 @@ def create_app():
     @app.route('/api/health')
     def health():
         return jsonify({'status': 'ok'})
+
+    import logging
+    logging.basicConfig(level=logging.INFO, format='%(message)s')
+    log = logging.getLogger(__name__)
+
+    @app.before_request
+    def log_request():
+        log.info(f"REQ: {request.method} {request.path}")
+
+    @app.after_request
+    def log_response(response):
+        log.info(f"RES: {request.method} {request.path} -> {response.status_code}")
+        return response
 
     try:
         CORS(app)

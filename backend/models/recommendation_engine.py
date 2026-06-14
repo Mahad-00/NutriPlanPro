@@ -2,8 +2,6 @@ import os, math, sqlite3, gdown, joblib
 import pandas as pd
 import numpy as np
 from collections import defaultdict
-from sklearn.metrics.pairwise import cosine_similarity
-from sentence_transformers import SentenceTransformer
 
 # ── Constants ──────────────────────────────────────────────────
 MODELS_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -119,6 +117,7 @@ def _build_embeddings(df):
         food_df = joblib.load(DATAFRAME_PATH)
     else:
         print(f"Encoding {len(df)} foods with {EMBEDDING_MODEL_NAME}...")
+        from sentence_transformers import SentenceTransformer
         model = SentenceTransformer(EMBEDDING_MODEL_NAME)
         food_embeddings = model.encode(df["food_text"].tolist(), show_progress_bar=True, batch_size=64)
         food_df = df.copy()
@@ -135,6 +134,7 @@ def _build_embeddings(df):
 
 class FoodRecommendationEngine:
     def __init__(self, dataframe, embeddings, embed_model_name):
+        from sentence_transformers import SentenceTransformer
         self.foods = dataframe.reset_index(drop=True)
         self.embeddings = embeddings
         self.embed_model = SentenceTransformer(embed_model_name)
@@ -184,6 +184,7 @@ class FoodRecommendationEngine:
         return self._df_to_records(f.head(top_k))
 
     def similar_foods(self, food_name, top_k=10):
+        from sklearn.metrics.pairwise import cosine_similarity
         mask = self.foods["food name"].str.lower() == food_name.lower()
         idx_list = self.foods.index[mask].tolist()
         if not idx_list:
@@ -198,6 +199,7 @@ class FoodRecommendationEngine:
         return result
 
     def search(self, query_text, top_k=10, threshold=0.2):
+        from sklearn.metrics.pairwise import cosine_similarity
         query_vec = self.embed_model.encode([query_text])
         sims = cosine_similarity(query_vec, self.embeddings)[0]
         top_indices = [i for i in np.argsort(sims)[::-1] if sims[i] >= threshold][:top_k]
