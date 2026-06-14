@@ -10,6 +10,7 @@ pandas>=2.2.0
 scikit-learn>=1.5.0
 cloudinary==1.44.2
 gunicorn==23.0.0
+waitress==3.0.2
 tzdata==2025.2
 gdown==5.2.0
 joblib==1.4.2

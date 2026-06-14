@@ -4,7 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "cd backend && exec /opt/venv/bin/python diagnostic_server.py",
+    "startCommand": "cd backend && exec /opt/venv/bin/python -m waitress --port=$PORT wsgi:app",
     "healthcheckPath": "/api/health",
     "restartPolicyType": "ON_FAILURE"
   }
