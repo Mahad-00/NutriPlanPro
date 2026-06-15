@@ -128,7 +128,7 @@ export default function AdminUsers() {
     };
 
     const exportCsv = () => {
-        window.open(`http://localhost:5000/api/admin/users/export?token=${localStorage.getItem('token')}`, '_blank');
+        window.open(`/api/admin/users/export?token=${localStorage.getItem('token')}`, '_blank');
     };
 
     const SortIcon = ({ col }) => {
