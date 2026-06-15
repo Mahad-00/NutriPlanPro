@@ -1,4 +1,5 @@
 import { HashRouter, Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './src/components/ProtectedRoute';
 import Home from './src/screen/Home';
 import Features from './src/screen/Features';
 import Pricing from './src/screen/Pricing';
@@ -59,30 +60,30 @@ function App() {
         <Route path="/confirm-password" element={<ConfirmPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route path="/onboarding" element={<Onboarding />} />
-        <Route path="/dashboard" element={<Overview />} />
-        <Route path="/dashboard/food-diary" element={<FoodDiary />} />
-        <Route path="/dashboard/meal-planner" element={<MealPlanner />} />
-        <Route path="/dashboard/barcode-scanner" element={<BarcodeScanner />} />
-        <Route path="/dashboard/meal-scan" element={<MealScan />} />
-        <Route path="/dashboard/recipes" element={<Recipes />} />
-        <Route path="/dashboard/custom-foods" element={<CustomFoods />} />
-        <Route path="/dashboard/grocery-list" element={<GroceryList />} />
-        <Route path="/dashboard/nutrition" element={<Nutrition />} />
-        <Route path="/dashboard/diet-recommender" element={<DietRecommender />} />
-        <Route path="/dashboard/goals" element={<Goals />} />
-        <Route path="/dashboard/exercise" element={<Exercise />} />
-        <Route path="/dashboard/workouts" element={<Workouts />} />
-        <Route path="/dashboard/water" element={<Water />} />
-        <Route path="/dashboard/weekly-calendar" element={<WeeklyCalendar />} />
-        <Route path="/dashboard/progress" element={<Progress />} />
-        <Route path="/dashboard/restaurants" element={<Restaurants />} />
-        <Route path="/dashboard/friends" element={<Friends />} />
-        <Route path="/dashboard/messages" element={<Messages />} />
-        <Route path="/dashboard/settings" element={<Settings />} />
-        <Route path="/admin" element={<AdminOverview />} />
-        <Route path="/admin/users" element={<AdminUsers />} />
-        <Route path="/admin/contact-messages" element={<AdminContactMessages />} />
+        <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><Overview /></ProtectedRoute>} />
+        <Route path="/dashboard/food-diary" element={<ProtectedRoute><FoodDiary /></ProtectedRoute>} />
+        <Route path="/dashboard/meal-planner" element={<ProtectedRoute><MealPlanner /></ProtectedRoute>} />
+        <Route path="/dashboard/barcode-scanner" element={<ProtectedRoute><BarcodeScanner /></ProtectedRoute>} />
+        <Route path="/dashboard/meal-scan" element={<ProtectedRoute><MealScan /></ProtectedRoute>} />
+        <Route path="/dashboard/recipes" element={<ProtectedRoute><Recipes /></ProtectedRoute>} />
+        <Route path="/dashboard/custom-foods" element={<ProtectedRoute><CustomFoods /></ProtectedRoute>} />
+        <Route path="/dashboard/grocery-list" element={<ProtectedRoute><GroceryList /></ProtectedRoute>} />
+        <Route path="/dashboard/nutrition" element={<ProtectedRoute><Nutrition /></ProtectedRoute>} />
+        <Route path="/dashboard/diet-recommender" element={<ProtectedRoute><DietRecommender /></ProtectedRoute>} />
+        <Route path="/dashboard/goals" element={<ProtectedRoute><Goals /></ProtectedRoute>} />
+        <Route path="/dashboard/exercise" element={<ProtectedRoute><Exercise /></ProtectedRoute>} />
+        <Route path="/dashboard/workouts" element={<ProtectedRoute><Workouts /></ProtectedRoute>} />
+        <Route path="/dashboard/water" element={<ProtectedRoute><Water /></ProtectedRoute>} />
+        <Route path="/dashboard/weekly-calendar" element={<ProtectedRoute><WeeklyCalendar /></ProtectedRoute>} />
+        <Route path="/dashboard/progress" element={<ProtectedRoute><Progress /></ProtectedRoute>} />
+        <Route path="/dashboard/restaurants" element={<ProtectedRoute><Restaurants /></ProtectedRoute>} />
+        <Route path="/dashboard/friends" element={<ProtectedRoute><Friends /></ProtectedRoute>} />
+        <Route path="/dashboard/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
+        <Route path="/dashboard/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute><AdminOverview /></ProtectedRoute>} />
+        <Route path="/admin/users" element={<ProtectedRoute><AdminUsers /></ProtectedRoute>} />
+        <Route path="/admin/contact-messages" element={<ProtectedRoute><AdminContactMessages /></ProtectedRoute>} />
 
       </Routes>
     </HashRouter>
