@@ -12,7 +12,7 @@ const diets = ['balanced', 'vegetarian', 'vegan', 'keto', 'high_protein', 'low_c
 const mealLabels = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', snack: 'Snack' };
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ baseURL: '/api' });
 
 function headers() {
     const token = localStorage.getItem('token');

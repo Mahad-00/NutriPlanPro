@@ -4,7 +4,7 @@ import DashboardLayout from '../../Layouts/DashboardLayout';
 import { Trash2 } from 'lucide-react';
 import '../../styles/Water.css';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ baseURL: '/api' });
 function headers() {
     const token = localStorage.getItem('token');
     return token ? { Authorization: `Bearer ${token}` } : {};

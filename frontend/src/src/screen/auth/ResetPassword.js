@@ -5,7 +5,7 @@ import BrandLogo from '../../componenets/BrandLogo';
 import GuestLayout from '../../Layouts/GuestLayout';
 import '../../styles/ResetPassword.css';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ baseURL: '/api' });
 
 export default function ResetPassword() {
     const location = useLocation();

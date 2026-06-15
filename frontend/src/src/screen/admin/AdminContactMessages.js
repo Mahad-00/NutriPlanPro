@@ -4,7 +4,7 @@ import AdminLayout from '../../Layouts/AdminLayout';
 import '../../styles/Admin.css';
 import { MessageSquare, Mail, Send, X, RefreshCw } from 'lucide-react';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ baseURL: '/api' });
 function headers() {
     const token = localStorage.getItem('token');
     return token ? { Authorization: `Bearer ${token}` } : {};
