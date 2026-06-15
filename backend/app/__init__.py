@@ -133,6 +133,18 @@ def create_app():
                 db.session.execute(db.text('ALTER TABLE "ContactUs" ADD COLUMN is_read BOOLEAN DEFAULT false'))
                 db.session.commit()
 
+            import bcrypt
+            admin_email = os.environ.get('ADMIN_EMAIL', '').strip().lower()
+            admin_password = os.environ.get('ADMIN_PASSWORD', '')
+            if admin_email and admin_password:
+                existing_admin = User.query.filter_by(email=admin_email).first()
+                if not existing_admin:
+                    hashed = bcrypt.hashpw(admin_password.encode('utf-8'), bcrypt.gensalt())
+                    admin_user = User(name='Admin', email=admin_email, password=hashed.decode('utf-8'))
+                    db.session.add(admin_user)
+                    db.session.commit()
+                    log.info(f"Admin user created: {admin_email}")
+
         # Serve React frontend build
         if HAS_REACT:
             @app.route('/')
