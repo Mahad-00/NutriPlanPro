@@ -50,7 +50,7 @@ export default function AdminMealScans() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                     <thead>
                         <tr style={{ background: '#f8fafc', textAlign: 'left' }}>
-                            {['Email', 'Meal Type', 'Date', 'Calories', 'Protein', 'Carbs', 'Fat', 'Notes', ''].map(h => (
+                            {['User', 'Email', 'Meal Type', 'Date', 'Calories', 'Protein', 'Carbs', 'Fat', 'Notes', ''].map(h => (
                                 <th key={h} style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#475569', borderBottom: '1px solid #e2e8f0' }}>{h}</th>
                             ))}
                         </tr>
@@ -58,6 +58,7 @@ export default function AdminMealScans() {
                     <tbody>
                         {scans.map(s => (
                             <tr key={s.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                                <td style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#020617' }}>{s.user_name}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{s.email}</td>
                                 <td style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#020617', textTransform: 'capitalize' }}>{s.meal_type}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{s.date}</td>
@@ -77,7 +78,7 @@ export default function AdminMealScans() {
                             </tr>
                         ))}
                         {!scans.length && !loading && (
-                            <tr><td colSpan={9} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No meal scans found.</td></tr>
+                            <tr><td colSpan={10} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No meal scans found.</td></tr>
                         )}
                     </tbody>
                 </table>

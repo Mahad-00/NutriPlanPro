@@ -50,7 +50,7 @@ export default function AdminDietRecommendations() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                     <thead>
                         <tr style={{ background: '#f8fafc', textAlign: 'left' }}>
-                            {['Name', 'Email', 'Brand', 'Fit Score', 'Calories', 'Protein', 'Carbs', 'Fiber', 'Meal Type', 'Action', ''].map(h => (
+                            {['Name', 'User', 'Email', 'Brand', 'Fit Score', 'Calories', 'Protein', 'Carbs', 'Fiber', 'Meal Type', 'Action', ''].map(h => (
                                 <th key={h} style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#475569', borderBottom: '1px solid #e2e8f0' }}>{h}</th>
                             ))}
                         </tr>
@@ -59,6 +59,7 @@ export default function AdminDietRecommendations() {
                         {recs.map(r => (
                             <tr key={r.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                                 <td style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#020617' }}>{r.name}</td>
+                                <td style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#020617' }}>{r.user_name}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{r.email}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{r.brand || '-'}</td>
                                 <td style={{ padding: '0.75rem 1rem' }}><span style={{ background: '#f0fdf4', color: '#166534', fontWeight: 600, padding: '0.125rem 0.5rem', borderRadius: '9999px', fontSize: '0.75rem' }}>{r.fit_score}</span></td>
@@ -79,7 +80,7 @@ export default function AdminDietRecommendations() {
                             </tr>
                         ))}
                         {!recs.length && !loading && (
-                            <tr><td colSpan={11} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No diet recommendations found.</td></tr>
+                            <tr><td colSpan={12} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No diet recommendations found.</td></tr>
                         )}
                     </tbody>
                 </table>

@@ -50,7 +50,7 @@ export default function AdminPasswordResetCodes() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                     <thead>
                         <tr style={{ background: '#f8fafc', textAlign: 'left' }}>
-                            {['Email', 'Code', 'Created', 'Expires', 'Used', ''].map(h => (
+                            {['User', 'Email', 'Code', 'Created', 'Expires', 'Used', ''].map(h => (
                                 <th key={h} style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#475569', borderBottom: '1px solid #e2e8f0' }}>{h}</th>
                             ))}
                         </tr>
@@ -58,6 +58,7 @@ export default function AdminPasswordResetCodes() {
                     <tbody>
                         {codes.map(c => (
                             <tr key={c.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                                <td style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#020617' }}>{c.user_name}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{c.email}</td>
                                 <td style={{ padding: '0.75rem 1rem', fontFamily: 'monospace', fontWeight: 600, color: '#020617' }}>{c.code}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{c.created_at}</td>
@@ -76,7 +77,7 @@ export default function AdminPasswordResetCodes() {
                             </tr>
                         ))}
                         {!codes.length && !loading && (
-                            <tr><td colSpan={6} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No password reset codes found.</td></tr>
+                            <tr><td colSpan={7} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No password reset codes found.</td></tr>
                         )}
                     </tbody>
                 </table>

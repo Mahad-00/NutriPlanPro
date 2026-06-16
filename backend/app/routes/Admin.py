@@ -30,6 +30,12 @@ from app import db
 
 admin_bp = Blueprint('admin', __name__)
 
+
+def _user_name(email):
+    user = User.query.filter_by(email=email).first()
+    return user.name if user else email
+
+
 CASCADE_MODELS = [
     OnboardingDetail, Goal, DietRecommendation, WaterLog, MealPlan,
     MealScan, FoodDiaryEntry, ProgressEntry, WorkoutLog, WorkoutRoutine,
@@ -389,7 +395,7 @@ def list_recipes(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'recipes': [{**r.to_dict(), 'email': r.email} for r in items],
+        'recipes': [{**r.to_dict(), 'email': r.email, 'user_name': _user_name(r.email)} for r in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -414,7 +420,7 @@ def list_custom_foods(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'custom_foods': [{**f.to_dict(), 'email': f.email} for f in items],
+        'custom_foods': [{**f.to_dict(), 'email': f.email, 'user_name': _user_name(f.email)} for f in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -439,7 +445,7 @@ def list_barcode_foods(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'barcode_foods': [{**f.to_dict(), 'email': f.email} for f in items],
+        'barcode_foods': [{**f.to_dict(), 'email': f.email, 'user_name': _user_name(f.email)} for f in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -466,7 +472,7 @@ def list_food_diary(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'entries': [{**e.to_dict(), 'email': e.email} for e in items],
+        'entries': [{**e.to_dict(), 'email': e.email, 'user_name': _user_name(e.email)} for e in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -493,7 +499,7 @@ def list_meal_plans(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'meal_plans': [{**m.to_dict(), 'email': m.email} for m in items],
+        'meal_plans': [{**m.to_dict(), 'email': m.email, 'user_name': _user_name(m.email)} for m in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -520,7 +526,7 @@ def list_water_logs(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'water_logs': [{**w.to_dict(), 'email': w.email} for w in items],
+        'water_logs': [{**w.to_dict(), 'email': w.email, 'user_name': _user_name(w.email)} for w in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -547,7 +553,7 @@ def list_progress_entries(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'progress_entries': [{**p.to_dict(), 'email': p.email} for p in items],
+        'progress_entries': [{**p.to_dict(), 'email': p.email, 'user_name': _user_name(p.email)} for p in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -574,7 +580,7 @@ def list_workout_logs(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'workout_logs': [{**l.to_dict(), 'email': l.email} for l in items],
+        'workout_logs': [{**l.to_dict(), 'email': l.email, 'user_name': _user_name(l.email)} for l in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -601,7 +607,7 @@ def list_workout_routines(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'workout_routines': [{**r.to_dict(), 'email': r.email} for r in items],
+        'workout_routines': [{**r.to_dict(), 'email': r.email, 'user_name': _user_name(r.email)} for r in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -628,7 +634,7 @@ def list_diet_recommendations(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'diet_recommendations': [{**d.to_dict(), 'email': d.email} for d in items],
+        'diet_recommendations': [{**d.to_dict(), 'email': d.email, 'user_name': _user_name(d.email)} for d in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -655,7 +661,7 @@ def list_goals(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'goals': [{**g.to_dict(), 'email': g.email} for g in items],
+        'goals': [{**g.to_dict(), 'email': g.email, 'user_name': _user_name(g.email)} for g in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -682,7 +688,7 @@ def list_grocery_items(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'grocery_items': [{**g.to_dict(), 'email': g.email} for g in items],
+        'grocery_items': [{**g.to_dict(), 'email': g.email, 'user_name': _user_name(g.email)} for g in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -709,7 +715,7 @@ def list_meal_scans(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'meal_scans': [{**s.to_dict(), 'email': s.email} for s in items],
+        'meal_scans': [{**s.to_dict(), 'email': s.email, 'user_name': _user_name(s.email)} for s in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -736,7 +742,7 @@ def list_weekly_calendar(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'calendar_entries': [{**c.to_dict(), 'email': c.email} for c in items],
+        'calendar_entries': [{**c.to_dict(), 'email': c.email, 'user_name': _user_name(c.email)} for c in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -763,7 +769,7 @@ def list_password_reset_codes(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'reset_codes': [r.to_dict() for r in items],
+        'reset_codes': [{**r.to_dict(), 'user_name': _user_name(r.email)} for r in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -790,7 +796,7 @@ def list_onboarding_details(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'onboarding_details': [o.to_dict() for o in items],
+        'onboarding_details': [{**o.to_dict(), 'user_name': _user_name(o.email)} for o in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 

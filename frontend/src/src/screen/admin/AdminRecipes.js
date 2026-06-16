@@ -50,7 +50,7 @@ export default function AdminRecipes() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                     <thead>
                         <tr style={{ background: '#f8fafc', textAlign: 'left' }}>
-                            {['Title', 'Email', 'Category', 'Diet Type', 'Servings', 'Calories', 'Protein', 'Carbs', 'Fat', ''].map(h => (
+                            {['Title', 'User', 'Email', 'Category', 'Diet Type', 'Servings', 'Calories', 'Protein', 'Carbs', 'Fat', ''].map(h => (
                                 <th key={h} style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#475569', borderBottom: '1px solid #e2e8f0' }}>{h}</th>
                             ))}
                         </tr>
@@ -59,6 +59,7 @@ export default function AdminRecipes() {
                         {recipes.map(r => (
                             <tr key={r.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                                 <td style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#020617' }}>{r.title}</td>
+                                <td style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#020617' }}>{r.user_name}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{r.email}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b', textTransform: 'capitalize' }}>{r.category || '-'}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b', textTransform: 'capitalize' }}>{r.diet_type}</td>
@@ -78,7 +79,7 @@ export default function AdminRecipes() {
                             </tr>
                         ))}
                         {!recipes.length && !loading && (
-                            <tr><td colSpan={10} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No recipes found.</td></tr>
+                            <tr><td colSpan={11} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No recipes found.</td></tr>
                         )}
                     </tbody>
                 </table>
