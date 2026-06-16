@@ -1,31 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link, Navigate } from 'react-router-dom';
+import axios from 'axios';
 import { CaloriesChart, MacroDonutChart, WaterChart, WeightProgressChart } from '../../componenets/Charts';
-import { Badge, EmptyState, PageHeader, Panel, ProgressBar, StatCard } from '../../componenets/Ui';
+import { Badge, Panel } from '../../componenets/Ui';
 import DashboardLayout from '../../Layouts/DashboardLayout';
 import { Activity, Apple, Beef, Camera, Droplets, Flame, QrCode, Salad, Scale, Target, Utensils, Waves, ChevronRight, TrendingUp, Award, Clock } from 'lucide-react';
 import '../../styles/Overview.css';
 
-const MOCK_SUMMARY = {
-    totals: { calories: 1840, protein: 68, carbs: 210, fat: 52, fiber: 18 },
-    goal: { calories: 2450, protein: 95, carbs: 347, fat: 76, fiber: 34 },
-    remainingCalories: 610,
-    netCalories: 1720,
-    waterMl: 1500,
-    exerciseCalories: 120,
-    entries: [
-        { id: 1, name: 'Oatmeal with berries', meal_type: 'breakfast', calories: 320, protein: 12 },
-        { id: 2, name: 'Banana', meal_type: 'breakfast', calories: 105, protein: 1.3 },
-        { id: 3, name: 'Grilled chicken salad', meal_type: 'lunch', calories: 450, protein: 35 },
-        { id: 4, name: 'Brown rice', meal_type: 'lunch', calories: 216, protein: 5 },
-        { id: 5, name: 'Apple', meal_type: 'snack', calories: 95, protein: 0.5 },
-        { id: 6, name: 'Greek yogurt', meal_type: 'snack', calories: 150, protein: 15 },
-    ],
-    insights: [
-        { message: 'You are short on protein today. Add lean protein or Greek yogurt to close the gap.' },
-        { message: 'Fiber is low. Lentils, salad, oats, or fruit would help tomorrow feel better.' },
-    ],
-};
+const API = axios.create({ baseURL: '/api' });
+function headers() {
+    const t = localStorage.getItem('token');
+    return t ? { Authorization: `Bearer ${t}` } : {};
+}
+
+const todayStr = () => new Date().toISOString().slice(0, 10);
+const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const MOCK_CHARTS = {
     calories: [
@@ -91,18 +80,98 @@ export default function Overview() {
 
     useEffect(() => { document.title = 'Dashboard'; }, []);
 
-    const [summary]          = useState(MOCK_SUMMARY);
-    const [charts]           = useState(MOCK_CHARTS);
+    const [charts, setCharts] = useState(MOCK_CHARTS);
+    const [summary, setSummary] = useState(null);
     const [recommendedMeals] = useState(MOCK_RECOMMENDED);
     const [groceryReminders] = useState(MOCK_GROCERY);
     const [friendActivity]   = useState(MOCK_FRIENDS);
-    const [progress]         = useState({ currentWeight: 53.0, targetWeight: 70.0 });
+    const [progress, setProgress] = useState({ currentWeight: 53.0, targetWeight: 70.0 });
+
+    const loadData = useCallback(async () => {
+        try {
+            const [foodRes, waterRes, weightRes] = await Promise.all([
+                API.get('/food-diary/summary?days=7', { headers: headers() }),
+                API.get('/water', { headers: headers() }),
+                API.get('/progress?type=weight&per_page=50', { headers: headers() }),
+            ]);
+
+            const dailyCalories = foodRes.data.daily_calories || MOCK_CHARTS.calories;
+            const macros = foodRes.data.today_macros || { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 };
+            const macroSplit = [
+                { name: 'Protein', value: macros.protein, color: '#0ea5e9' },
+                { name: 'Carbs',   value: macros.carbs,   color: '#f59e0b' },
+                { name: 'Fat',     value: macros.fat,     color: '#14b8a6' },
+            ];
+
+            const goal = JSON.parse(localStorage.getItem('goal') || '{}');
+            const calGoal = goal.calorie_goal || 2450;
+            const protGoal = goal.protein_goal || 95;
+            const carbGoal = goal.carb_goal || 347;
+            const fatGoal = goal.fat_goal || 76;
+            const fiberGoal = goal.fiber_goal || 34;
+
+            const waterLogs = waterRes.data.logs || [];
+            const waterByDay = {};
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date(); d.setDate(d.getDate() - i);
+                const key = d.toISOString().slice(0, 10);
+                waterByDay[dayNames[d.getDay()]] = 0;
+            }
+            for (const log of waterLogs) {
+                const d = new Date(log.date + 'T00:00:00');
+                const name = dayNames[d.getDay()];
+                if (name in waterByDay) waterByDay[name] += log.ml || 0;
+            }
+            const waterChart = Object.entries(waterByDay).map(([date, water]) => ({ date, water }));
+
+            const todayWater = waterLogs
+                .filter(l => l.date === todayStr())
+                .reduce((sum, l) => sum + (l.ml || 0), 0);
+
+            const weightEntries = weightRes.data.entries || [];
+            const weightChart = weightEntries
+                .filter(e => e.weight != null)
+                .sort((a, b) => a.date.localeCompare(b.date))
+                .map(e => ({ date: e.date.slice(5), weight: e.weight }));
+            const latestWeight = weightEntries.length > 0
+                ? weightEntries.reduce((a, b) => a.date > b.date ? a : b).weight || 53
+                : 53;
+
+            setCharts({
+                calories: dailyCalories,
+                macroSplit,
+                weight: weightChart.length ? weightChart : MOCK_CHARTS.weight,
+                water: waterChart,
+            });
+            setSummary({
+                totals: macros,
+                goal: { calories: calGoal, protein: protGoal, carbs: carbGoal, fat: fatGoal, fiber: fiberGoal },
+                remainingCalories: Math.max(0, calGoal - macros.calories),
+                netCalories: macros.calories,
+                waterMl: todayWater,
+                exerciseCalories: 0,
+                entries: foodRes.data.today_entries || [],
+                insights: [],
+            });
+            setProgress(p => ({ ...p, currentWeight: latestWeight }));
+        } catch {
+            setCharts(MOCK_CHARTS);
+        }
+    }, []);
+
+    useEffect(() => { loadData(); }, [loadData]);
 
     if (user.is_admin) {
         return <Navigate to="/admin" replace />;
     }
 
-    const calPct = Math.min((summary.totals.calories / summary.goal.calories) * 100, 100);
+    const s = summary || {
+        totals: { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 },
+        goal: { calories: 2450, protein: 95, carbs: 347, fat: 76, fiber: 34 },
+        remainingCalories: 2450, netCalories: 0, waterMl: 0, exerciseCalories: 0,
+        entries: [], insights: [],
+    };
+    const calPct = Math.min((s.totals.calories / s.goal.calories) * 100, 100);
 
     return (
         <DashboardLayout>
@@ -133,14 +202,14 @@ export default function Overview() {
 
                     {/* ── Stat Cards ── */}
                     <div style={{ display: 'grid', gap: '0.75rem', gridTemplateColumns: 'repeat(auto-fill, minmax(13rem, 1fr))', marginBottom: '1.5rem' }}>
-                        <StatCard2 icon={Flame}    label="Calories"     value={`${Math.round(summary.totals.calories)}`}     sub={`${summary.goal.calories} kcal target`}     color="#b91c1c" bg="#fef2f2" />
-                        <StatCard2 icon={Activity} label="Remaining"    value={`${summary.remainingCalories}`}               sub={`${summary.netCalories} net`}               color="#0f766e" bg="#f0fdf4" />
-                        <StatCard2 icon={Beef}     label="Protein"      value={`${Math.round(summary.totals.protein)}g`}    sub={`${summary.goal.protein}g target`}          color="#0ea5e9" bg="#f0f9ff" />
-                        <StatCard2 icon={Droplets} label="Water"        value={`${(summary.waterMl/1000).toFixed(1)}L`}     sub="Daily hydration"                            color="#06b6d4" bg="#ecfeff" />
-                        <StatCard2 icon={Apple}    label="Carbs"        value={`${Math.round(summary.totals.carbs)}g`}      sub={`${summary.goal.carbs}g target`}            color="#f59e0b" bg="#fffbeb" />
-                        <StatCard2 icon={Salad}    label="Fat"          value={`${Math.round(summary.totals.fat)}g`}        sub={`${summary.goal.fat}g target`}              color="#14b8a6" bg="#f0fdf4" />
-                        <StatCard2 icon={Flame}    label="Exercise"     value={`${summary.exerciseCalories}`}                sub="kcal burned"                               color="#ea580c" bg="#fff7ed" />
-                        <StatCard2 icon={Scale}    label="Weight"       value={`${progress.currentWeight} kg`}               sub={`${progress.targetWeight} kg target`}       color="#8b5cf6" bg="#f5f3ff" />
+                        <StatCard2 icon={Flame}    label="Calories"     value={`${Math.round(s.totals.calories)}`}     sub={`${s.goal.calories} kcal target`}     color="#b91c1c" bg="#fef2f2" />
+                        <StatCard2 icon={Activity} label="Remaining"    value={`${s.remainingCalories}`}               sub={`${s.netCalories} net`}               color="#0f766e" bg="#f0fdf4" />
+                        <StatCard2 icon={Beef}     label="Protein"      value={`${Math.round(s.totals.protein)}g`}    sub={`${s.goal.protein}g target`}          color="#0ea5e9" bg="#f0f9ff" />
+                        <StatCard2 icon={Droplets} label="Water"        value={`${(s.waterMl/1000).toFixed(1)}L`}     sub="Daily hydration"                      color="#06b6d4" bg="#ecfeff" />
+                        <StatCard2 icon={Apple}    label="Carbs"        value={`${Math.round(s.totals.carbs)}g`}      sub={`${s.goal.carbs}g target`}            color="#f59e0b" bg="#fffbeb" />
+                        <StatCard2 icon={Salad}    label="Fat"          value={`${Math.round(s.totals.fat)}g`}        sub={`${s.goal.fat}g target`}              color="#14b8a6" bg="#f0fdf4" />
+                        <StatCard2 icon={Flame}    label="Exercise"     value={`${s.exerciseCalories}`}                sub="kcal burned"                         color="#ea580c" bg="#fff7ed" />
+                        <StatCard2 icon={Scale}    label="Weight"       value={`${progress.currentWeight} kg`}         sub={`${progress.targetWeight} kg target`} color="#8b5cf6" bg="#f5f3ff" />
                     </div>
 
                     {/* ── Charts + Macros ── */}
@@ -162,10 +231,10 @@ export default function Overview() {
                             <MacroDonutChart data={charts.macroSplit} />
                             <div style={{ marginTop: '0.75rem', display: 'grid', gap: '0.5rem' }}>
                                 {[
-                                    ['Protein', summary.totals.protein, summary.goal.protein, '#0ea5e9'],
-                                    ['Carbs',   summary.totals.carbs,   summary.goal.carbs,   '#f59e0b'],
-                                    ['Fat',     summary.totals.fat,     summary.goal.fat,     '#14b8a6'],
-                                    ['Fiber',   summary.totals.fiber,   summary.goal.fiber,   '#f97316'],
+                                    ['Protein', s.totals.protein, s.goal.protein, '#0ea5e9'],
+                                    ['Carbs',   s.totals.carbs,   s.goal.carbs,   '#f59e0b'],
+                                    ['Fat',     s.totals.fat,     s.goal.fat,     '#14b8a6'],
+                                    ['Fiber',   s.totals.fiber,   s.goal.fiber,   '#f97316'],
                                 ].map(([label, value, goal, color]) => {
                                     const pct = Math.min((value / goal) * 100, 100);
                                     return (
@@ -194,8 +263,8 @@ export default function Overview() {
                                 <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>Today's Food Diary</h2>
                             </div>
                             <div style={{ display: 'grid', gap: '0.5rem' }}>
-                                {summary.entries.length
-                                    ? summary.entries.map(entry => (
+                                {s.entries.length
+                                    ? s.entries.map(entry => (
                                         <div key={entry.id} style={{
                                             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                                             padding: '0.5rem 0.75rem', background: '#f8fafc', borderRadius: '0.5rem',
@@ -222,7 +291,7 @@ export default function Overview() {
                                 <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>Nutrition Insights</h2>
                             </div>
                             <div style={{ display: 'grid', gap: '0.5rem' }}>
-                                {summary.insights.map(insight => (
+                                {(s.insights || []).map(insight => (
                                     <div key={insight.message} style={{
                                         padding: '0.75rem', background: '#fffbeb', borderRadius: '0.5rem',
                                         borderLeft: '3px solid #f59e0b', fontSize: '0.875rem', color: '#92400e', lineHeight: 1.5

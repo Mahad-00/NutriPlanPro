@@ -80,6 +80,32 @@ def create_entry(current_user):
     return jsonify({'entry': entry.to_dict()}), 201
 
 
+@food_diary_bp.route('/summary', methods=['GET'])
+@require_auth
+def diary_summary(current_user):
+    from datetime import timedelta, date as date_type
+    days = min(request.args.get('days', 7, type=int), 30)
+    today = date_type.today()
+
+    daily_calories = []
+    for i in range(days - 1, -1, -1):
+        d = today - timedelta(days=i)
+        rows = FoodDiaryEntry.query.filter_by(email=current_user['email'], date=d).all()
+        total = sum(r.calories or 0 for r in rows)
+        daily_calories.append({'date': d.strftime('%a'), 'calories': round(total)})
+
+    today_rows = FoodDiaryEntry.query.filter_by(email=current_user['email'], date=today).all()
+    today_macros = {
+        'calories': round(sum(r.calories or 0 for r in today_rows)),
+        'protein': round(sum(r.protein or 0 for r in today_rows)),
+        'carbs': round(sum(r.carbs or 0 for r in today_rows)),
+        'fat': round(sum(r.fat or 0 for r in today_rows)),
+        'fiber': round(sum(r.fiber or 0 for r in today_rows)),
+    }
+
+    return jsonify({'daily_calories': daily_calories, 'today_macros': today_macros})
+
+
 @food_diary_bp.route('/batch', methods=['POST'])
 @require_auth
 def batch_create(current_user):
