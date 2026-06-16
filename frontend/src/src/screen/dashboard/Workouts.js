@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import axios from 'axios';
 import DashboardLayout from '../../Layouts/DashboardLayout';
-import { Sparkles, CheckCircle } from 'lucide-react';
+import { Sparkles, CheckCircle, BarChart3 } from 'lucide-react';
+import { WorkoutChart } from '../../componenets/Charts';
 import '../../styles/Workouts.css';
 
 const API = axios.create({ baseURL: '/api' });
@@ -171,6 +172,28 @@ export default function Workouts() {
                             {logged ? 'Logged!' : 'Log complete'}
                         </button>
                     </div>
+                </div>
+
+                <div style={{ background: '#fff', borderRadius: 10, border: '1px solid #e2e8f0', padding: '18px 22px', marginBottom: 18 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                        <h2 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+                            <BarChart3 size={16} /> Workouts this week
+                        </h2>
+                    </div>
+                    {(() => {
+                        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                        const today = new Date();
+                        const weeklyData = [];
+                        for (let i = 6; i >= 0; i--) {
+                            const d = new Date(today);
+                            d.setDate(d.getDate() - i);
+                            const dayLabel = dayNames[d.getDay()];
+                            const dateStr = d.toISOString().slice(0, 10);
+                            const count = logs.filter(l => l.date === dateStr || l.date?.startsWith(dateStr)).length;
+                            weeklyData.push({ date: dayLabel, count });
+                        }
+                        return <WorkoutChart data={weeklyData} />;
+                    })()}
                 </div>
 
                 <div style={{ background: '#fff', borderRadius: 10, border: '1px solid #e2e8f0', padding: '18px 22px', marginBottom: 18 }}>

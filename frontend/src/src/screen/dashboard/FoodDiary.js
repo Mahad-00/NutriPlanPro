@@ -3,7 +3,8 @@ import axios from 'axios';
 import DashboardLayout from '../../Layouts/DashboardLayout';
 import { Badge, EmptyState, PageHeader, Panel, ProgressBar } from '../../componenets/Ui';
 import InputError from '../../componenets/InputError';
-import { Copy, Plus, Trash2 } from 'lucide-react';
+import { Copy, Plus, Trash2, PieChart } from 'lucide-react';
+import { MealBreakdownChart } from '../../componenets/Charts';
 import '../../styles/FoodDiary.css';
 
 const API = axios.create({ baseURL: '/api' });
@@ -163,6 +164,23 @@ export default function FoodDiary() {
                         <Stat label="Water" value={`0ml / ${goal.water}ml`} percent={0} color="#0284c7" />
                         <Stat label="Exercise" value={`${totals.exerciseCalories} kcal`} percent={0} color="#f97316" />
                     </div>
+
+                    <Panel>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: '0.75rem' }}>
+                            <PieChart size={16} />
+                            <h2 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>Calorie breakdown by meal</h2>
+                        </div>
+                        {(() => {
+                            const mealLabels = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', snack: 'Snacks' };
+                            const breakdown = mealTypes
+                                .filter(m => entriesByMeal[m].length)
+                                .map(m => ({
+                                    meal: mealLabels[m] || m,
+                                    calories: entriesByMeal[m].reduce((s, e) => s + Number(e.calories || 0), 0),
+                                }));
+                            return breakdown.length ? <MealBreakdownChart data={breakdown} /> : <p style={{ fontSize: 13, color: '#94a3b8', margin: 0 }}>No entries today yet.</p>;
+                        })()}
+                    </Panel>
 
                     <Panel>
                         <div style={{ marginBottom: '1rem', display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between', gap: '0.75rem' }}>

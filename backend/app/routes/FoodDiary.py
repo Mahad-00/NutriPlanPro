@@ -103,7 +103,19 @@ def diary_summary(current_user):
         'fiber': round(sum(r.fiber or 0 for r in today_rows)),
     }
 
-    return jsonify({'daily_calories': daily_calories, 'today_macros': today_macros})
+    daily_macros = []
+    for i in range(days - 1, -1, -1):
+        d = today - timedelta(days=i)
+        rows = FoodDiaryEntry.query.filter_by(email=current_user['email'], date=d).all()
+        daily_macros.append({
+            'date': d.strftime('%a'),
+            'protein': round(sum(r.protein or 0 for r in rows)),
+            'carbs': round(sum(r.carbs or 0 for r in rows)),
+            'fat': round(sum(r.fat or 0 for r in rows)),
+            'calories': round(sum(r.calories or 0 for r in rows)),
+        })
+
+    return jsonify({'daily_calories': daily_calories, 'today_macros': today_macros, 'daily_macros': daily_macros})
 
 
 @food_diary_bp.route('/batch', methods=['POST'])

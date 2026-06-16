@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import axios from 'axios';
 import DashboardLayout from '../../Layouts/DashboardLayout';
+import { WaterChart } from '../../componenets/Charts';
 import { Trash2 } from 'lucide-react';
 import '../../styles/Water.css';
 
@@ -24,10 +25,12 @@ export default function Water() {
     useEffect(() => { document.title = 'Water'; }, []);
 
     const today = new Date().toISOString().slice(0, 10);
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const [total, setTotal] = useState(0);
     const [custom, setCustom] = useState(250);
     const [date, setDate] = useState(today);
     const [logs, setLogs] = useState([]);
+    const [weeklyData, setWeeklyData] = useState([]);
     const [activeQuick, setActiveQuick] = useState(250);
     const submitting = useRef(false);
 
@@ -40,9 +43,29 @@ export default function Water() {
         } catch { setLogs([]); setTotal(0); }
     }, [date]);
 
+    const fetchWeekly = useCallback(async () => {
+        try {
+            const res = await API.get('/water', { headers: headers() });
+            const allLogs = res.data.logs || [];
+            const byDay = {};
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date(); d.setDate(d.getDate() - i);
+                byDay[dayNames[d.getDay()]] = d.toISOString().slice(0, 10);
+            }
+            const dayTotals = {};
+            for (const dayName of Object.keys(byDay)) dayTotals[dayName] = 0;
+            for (const log of allLogs) {
+                const d = new Date(log.date + 'T00:00:00');
+                const name = dayNames[d.getDay()];
+                if (name in dayTotals) dayTotals[name] += log.ml || 0;
+            }
+            setWeeklyData(Object.entries(dayTotals).map(([date, water]) => ({ date, water })));
+        } catch { setWeeklyData([]); }
+    }, [dayNames]);
+
     useEffect(() => {
-        if (localStorage.getItem('token')) fetchLogs();
-    }, [fetchLogs]);
+        if (localStorage.getItem('token')) { fetchLogs(); fetchWeekly(); }
+    }, [fetchLogs, fetchWeekly]);
 
     const addWater = async (ml) => {
         if (submitting.current) return;
@@ -230,6 +253,12 @@ export default function Water() {
                             ))}
                         </div>
                     )}
+                </div>
+
+                <div style={{ background: '#fff', borderRadius: 10, border: '1px solid #e2e8f0', padding: '16px 20px', marginTop: 14 }}>
+                    <h2 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', margin: '0 0 4px' }}>Weekly Water Intake</h2>
+                    <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 8px' }}>Last 7 days</p>
+                    {weeklyData.length ? <WaterChart data={weeklyData} /> : <p style={{ fontSize: 13, color: '#94a3b8', textAlign: 'center', padding: '20px 0' }}>No weekly data yet.</p>}
                 </div>
             </div>
         </DashboardLayout>

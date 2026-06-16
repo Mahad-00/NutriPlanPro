@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import axios from 'axios';
 import DashboardLayout from '../../Layouts/DashboardLayout';
+import { GoalTrendChart } from '../../componenets/Charts';
 import '../../styles/Goals.css';
 
 const API = axios.create({ baseURL: '/api' });
@@ -42,19 +43,26 @@ export default function Goals() {
     const [tdeeSource, setTdeeSource] = useState(false);
     const [saved, setSaved] = useState(false);
     const [records, setRecords] = useState([]);
+    const [chartData, setChartData] = useState([]);
     const set = (f, v) => setForm(prev => ({ ...prev, [f]: v }));
 
     const fetchGoals = useCallback(async () => {
         try {
             const res = await API.get('/goals', { headers: headers() });
-            setRecords(res.data.goals);
-        } catch { setRecords([]); }
+            const goals = res.data.goals || [];
+            setRecords(goals);
+            setChartData(goals.slice().reverse().map(g => ({
+                date: g.date?.slice(5) || '',
+                calories: Math.round(g.calorie_goal || 0),
+                protein: Math.round(g.protein_goal || 0),
+            })));
+        } catch { setRecords([]); setChartData([]); }
     }, []);
 
     const fetchOnboarding = useCallback(async () => {
         try {
             const res = await API.get('/auth/onboarding', { headers: headers() });
-            setOnboardingData(res.data.detail);
+            setOnboardingData(res.data);
         } catch { setOnboardingData(null); }
     }, []);
 
@@ -113,26 +121,9 @@ export default function Goals() {
                 <h1 style={{ fontSize: 22, fontWeight: 700, color: '#0f172a', margin: '0 0 4px' }}>Goals</h1>
                 <p style={{ fontSize: 13, color: '#64748b', margin: '0 0 22px' }}>Set weight, calorie, macro, and meal distribution targets.</p>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, marginBottom: 18 }}>
-                    {[
-                        { label: 'Recommended calories', color: '#16a34a', pct: 38 },
-                        { label: 'Macro goal editor',    color: '#3b82f6', pct: 55 },
-                        { label: 'Meal calorie distribution', color: '#f97316', pct: 72 },
-                    ].map(b => (
-                        <div key={b.label} style={{ background: '#fff', borderRadius: 10, padding: '14px 16px', border: '1px solid #e2e8f0' }}>
-                            <span style={{
-                                display: 'inline-block',
-                                border: `1px solid ${b.color}`,
-                                color: b.color,
-                                fontSize: 11,
-                                fontWeight: 600,
-                                padding: '2px 10px',
-                                borderRadius: 20,
-                                marginBottom: 8,
-                            }}>{b.label}</span>
-                            <ProgressBar color={b.color} pct={b.pct} />
-                        </div>
-                    ))}
+                <div style={{ background: '#fff', borderRadius: 10, border: '1px solid #e2e8f0', padding: '18px 22px', marginBottom: 18 }}>
+                    <h2 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', margin: '0 0 8px' }}>Goal Trends</h2>
+                    {chartData.length ? <GoalTrendChart data={chartData} /> : <p style={{ fontSize: 13, color: '#94a3b8', textAlign: 'center', padding: '20px 0' }}>Save goals to see trends here.</p>}
                 </div>
 
                 <div style={{ background: '#fff', borderRadius: 10, border: '1px solid #e2e8f0', padding: '22px 24px', marginBottom: 18 }}>
