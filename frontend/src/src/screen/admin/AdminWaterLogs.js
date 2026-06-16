@@ -50,7 +50,7 @@ export default function AdminWaterLogs() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                     <thead>
                         <tr style={{ background: '#f8fafc', textAlign: 'left' }}>
-                            {['Date', 'Amount (ml)', 'Time', ''].map(h => (
+                            {['Email', 'Date', 'Amount (ml)', 'Time', ''].map(h => (
                                 <th key={h} style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#475569', borderBottom: '1px solid #e2e8f0' }}>{h}</th>
                             ))}
                         </tr>
@@ -58,6 +58,7 @@ export default function AdminWaterLogs() {
                     <tbody>
                         {logs.map(l => (
                             <tr key={l.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                                <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{l.email}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{l.date}</td>
                                 <td style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#020617' }}>{l.ml} ml</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{l.time || '-'}</td>
@@ -72,7 +73,7 @@ export default function AdminWaterLogs() {
                             </tr>
                         ))}
                         {!logs.length && !loading && (
-                            <tr><td colSpan={4} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No water logs found.</td></tr>
+                            <tr><td colSpan={5} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No water logs found.</td></tr>
                         )}
                     </tbody>
                 </table>

@@ -50,7 +50,7 @@ export default function AdminProgressEntries() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                     <thead>
                         <tr style={{ background: '#f8fafc', textAlign: 'left' }}>
-                            {['Date', 'Type', 'Weight (kg)', 'Waist', 'Chest', 'Hips', 'Arms', 'Thighs', ''].map(h => (
+                            {['Email', 'Date', 'Type', 'Weight (kg)', 'Waist', 'Chest', 'Hips', 'Arms', 'Thighs', ''].map(h => (
                                 <th key={h} style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#475569', borderBottom: '1px solid #e2e8f0' }}>{h}</th>
                             ))}
                         </tr>
@@ -58,6 +58,7 @@ export default function AdminProgressEntries() {
                     <tbody>
                         {entries.map(e => (
                             <tr key={e.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                                <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{e.email}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{e.date}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b', textTransform: 'capitalize' }}>{e.entry_type}</td>
                                 <td style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#020617' }}>{e.weight ?? '-'}</td>
@@ -77,7 +78,7 @@ export default function AdminProgressEntries() {
                             </tr>
                         ))}
                         {!entries.length && !loading && (
-                            <tr><td colSpan={9} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No progress entries found.</td></tr>
+                            <tr><td colSpan={10} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No progress entries found.</td></tr>
                         )}
                     </tbody>
                 </table>

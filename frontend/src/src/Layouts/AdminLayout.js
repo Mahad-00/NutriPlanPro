@@ -1,5 +1,5 @@
 import { Link, useLocation, Navigate } from 'react-router-dom';
-import { LayoutDashboard, Users, MessageSquare, LogOut, Utensils, Apple, Barcode, ClipboardList, Calendar, Droplets, TrendingUp, Dumbbell, ListOrdered, Lightbulb, Target, ShoppingCart } from 'lucide-react';
+import { LayoutDashboard, Users, MessageSquare, LogOut, Utensils, Apple, Barcode, ClipboardList, Calendar, Droplets, TrendingUp, Dumbbell, ListOrdered, Lightbulb, Target, ShoppingCart, Camera, Key, FileText } from 'lucide-react';
 import BrandLogo from '../componenets/BrandLogo';
 
 const nav = [
@@ -13,8 +13,11 @@ const nav = [
     { divider: true },
     { to: '/admin/food-diary', label: 'Food Diary', icon: ClipboardList },
     { to: '/admin/meal-plans', label: 'Meal Plans', icon: Calendar },
+    { to: '/admin/meal-scans', label: 'Meal Scans', icon: Camera },
+    { to: '/admin/weekly-calendar', label: 'Weekly Calendar', icon: Calendar },
     { to: '/admin/water-logs', label: 'Water Logs', icon: Droplets },
     { to: '/admin/progress-entries', label: 'Progress', icon: TrendingUp },
+    { to: '/admin/onboarding-details', label: 'Onboarding Details', icon: FileText },
     { divider: true },
     { to: '/admin/workout-logs', label: 'Workout Logs', icon: Dumbbell },
     { to: '/admin/workout-routines', label: 'Workout Routines', icon: ListOrdered },
@@ -22,6 +25,7 @@ const nav = [
     { to: '/admin/diet-recommendations', label: 'Diet Recommendations', icon: Lightbulb },
     { to: '/admin/goals', label: 'Goals', icon: Target },
     { to: '/admin/grocery-items', label: 'Grocery Items', icon: ShoppingCart },
+    { to: '/admin/password-reset-codes', label: 'Password Reset Codes', icon: Key },
 ];
 
 export default function AdminLayout({ children }) {

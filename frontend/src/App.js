@@ -48,6 +48,10 @@ import AdminWorkoutRoutines from './src/screen/admin/AdminWorkoutRoutines';
 import AdminDietRecommendations from './src/screen/admin/AdminDietRecommendations';
 import AdminGoals from './src/screen/admin/AdminGoals';
 import AdminGroceryItems from './src/screen/admin/AdminGroceryItems';
+import AdminMealScans from './src/screen/admin/AdminMealScans';
+import AdminWeeklyCalendar from './src/screen/admin/AdminWeeklyCalendar';
+import AdminPasswordResetCodes from './src/screen/admin/AdminPasswordResetCodes';
+import AdminOnboardingDetails from './src/screen/admin/AdminOnboardingDetails';
 
 
 const stats = [
@@ -108,6 +112,10 @@ function App() {
         <Route path="/admin/diet-recommendations" element={<ProtectedRoute><AdminDietRecommendations /></ProtectedRoute>} />
         <Route path="/admin/goals" element={<ProtectedRoute><AdminGoals /></ProtectedRoute>} />
         <Route path="/admin/grocery-items" element={<ProtectedRoute><AdminGroceryItems /></ProtectedRoute>} />
+        <Route path="/admin/meal-scans" element={<ProtectedRoute><AdminMealScans /></ProtectedRoute>} />
+        <Route path="/admin/weekly-calendar" element={<ProtectedRoute><AdminWeeklyCalendar /></ProtectedRoute>} />
+        <Route path="/admin/password-reset-codes" element={<ProtectedRoute><AdminPasswordResetCodes /></ProtectedRoute>} />
+        <Route path="/admin/onboarding-details" element={<ProtectedRoute><AdminOnboardingDetails /></ProtectedRoute>} />
 
       </Routes>
     </HashRouter>

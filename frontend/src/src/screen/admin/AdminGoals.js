@@ -50,7 +50,7 @@ export default function AdminGoals() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                     <thead>
                         <tr style={{ background: '#f8fafc', textAlign: 'left' }}>
-                            {['Date', 'Goal Type', 'Calorie Goal', 'Protein Goal', 'Carb Goal', 'Fat Goal', ''].map(h => (
+                            {['Email', 'Date', 'Goal Type', 'Calorie Goal', 'Protein Goal', 'Carb Goal', 'Fat Goal', ''].map(h => (
                                 <th key={h} style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#475569', borderBottom: '1px solid #e2e8f0' }}>{h}</th>
                             ))}
                         </tr>
@@ -58,6 +58,7 @@ export default function AdminGoals() {
                     <tbody>
                         {goals.map(g => (
                             <tr key={g.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                                <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{g.email}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{g.date}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b', textTransform: 'capitalize' }}>{g.goal_type?.replace('_', ' ')}</td>
                                 <td style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#020617' }}>{g.calorie_goal}</td>
@@ -75,7 +76,7 @@ export default function AdminGoals() {
                             </tr>
                         ))}
                         {!goals.length && !loading && (
-                            <tr><td colSpan={7} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No goals found.</td></tr>
+                            <tr><td colSpan={8} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No goals found.</td></tr>
                         )}
                     </tbody>
                 </table>

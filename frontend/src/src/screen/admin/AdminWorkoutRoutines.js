@@ -50,7 +50,7 @@ export default function AdminWorkoutRoutines() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                     <thead>
                         <tr style={{ background: '#f8fafc', textAlign: 'left' }}>
-                            {['Name', 'Goal', 'Level', 'Exercises', ''].map(h => (
+                            {['Name', 'Email', 'Goal', 'Level', 'Exercises', ''].map(h => (
                                 <th key={h} style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#475569', borderBottom: '1px solid #e2e8f0' }}>{h}</th>
                             ))}
                         </tr>
@@ -59,6 +59,7 @@ export default function AdminWorkoutRoutines() {
                         {routines.map(r => (
                             <tr key={r.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                                 <td style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#020617' }}>{r.name}</td>
+                                <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{r.email}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b', textTransform: 'capitalize' }}>{r.goal?.replace('_', ' ')}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b', textTransform: 'capitalize' }}>{r.level}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b', maxWidth: '20rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.exercises}</td>
@@ -73,7 +74,7 @@ export default function AdminWorkoutRoutines() {
                             </tr>
                         ))}
                         {!routines.length && !loading && (
-                            <tr><td colSpan={5} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No workout routines found.</td></tr>
+                            <tr><td colSpan={6} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No workout routines found.</td></tr>
                         )}
                     </tbody>
                 </table>

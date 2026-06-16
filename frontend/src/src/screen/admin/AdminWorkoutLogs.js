@@ -50,7 +50,7 @@ export default function AdminWorkoutLogs() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                     <thead>
                         <tr style={{ background: '#f8fafc', textAlign: 'left' }}>
-                            {['Routine', 'Date', 'Goal', 'Exercises', ''].map(h => (
+                            {['Routine', 'Email', 'Date', 'Goal', 'Exercises', ''].map(h => (
                                 <th key={h} style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#475569', borderBottom: '1px solid #e2e8f0' }}>{h}</th>
                             ))}
                         </tr>
@@ -59,6 +59,7 @@ export default function AdminWorkoutLogs() {
                         {logs.map(l => (
                             <tr key={l.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                                 <td style={{ padding: '0.75rem 1rem', fontWeight: 600, color: '#020617' }}>{l.routine_name}</td>
+                                <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{l.email}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{l.date}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b', textTransform: 'capitalize' }}>{l.goal?.replace('_', ' ')}</td>
                                 <td style={{ padding: '0.75rem 1rem', color: '#64748b', maxWidth: '20rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.exercises}</td>
@@ -73,7 +74,7 @@ export default function AdminWorkoutLogs() {
                             </tr>
                         ))}
                         {!logs.length && !loading && (
-                            <tr><td colSpan={5} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No workout logs found.</td></tr>
+                            <tr><td colSpan={6} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No workout logs found.</td></tr>
                         )}
                     </tbody>
                 </table>

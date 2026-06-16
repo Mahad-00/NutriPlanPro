@@ -389,7 +389,7 @@ def list_recipes(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'recipes': [r.to_dict() for r in items],
+        'recipes': [{**r.to_dict(), 'email': r.email} for r in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -414,7 +414,7 @@ def list_custom_foods(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'custom_foods': [f.to_dict() for f in items],
+        'custom_foods': [{**f.to_dict(), 'email': f.email} for f in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -439,7 +439,7 @@ def list_barcode_foods(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'barcode_foods': [f.to_dict() for f in items],
+        'barcode_foods': [{**f.to_dict(), 'email': f.email} for f in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -466,7 +466,7 @@ def list_food_diary(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'entries': [e.to_dict() for e in items],
+        'entries': [{**e.to_dict(), 'email': e.email} for e in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -493,7 +493,7 @@ def list_meal_plans(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'meal_plans': [m.to_dict() for m in items],
+        'meal_plans': [{**m.to_dict(), 'email': m.email} for m in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -520,7 +520,7 @@ def list_water_logs(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'water_logs': [w.to_dict() for w in items],
+        'water_logs': [{**w.to_dict(), 'email': w.email} for w in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -547,7 +547,7 @@ def list_progress_entries(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'progress_entries': [p.to_dict() for p in items],
+        'progress_entries': [{**p.to_dict(), 'email': p.email} for p in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -574,7 +574,7 @@ def list_workout_logs(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'workout_logs': [l.to_dict() for l in items],
+        'workout_logs': [{**l.to_dict(), 'email': l.email} for l in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -601,7 +601,7 @@ def list_workout_routines(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'workout_routines': [r.to_dict() for r in items],
+        'workout_routines': [{**r.to_dict(), 'email': r.email} for r in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -628,7 +628,7 @@ def list_diet_recommendations(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'diet_recommendations': [d.to_dict() for d in items],
+        'diet_recommendations': [{**d.to_dict(), 'email': d.email} for d in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -655,7 +655,7 @@ def list_goals(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'goals': [g.to_dict() for g in items],
+        'goals': [{**g.to_dict(), 'email': g.email} for g in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -682,7 +682,7 @@ def list_grocery_items(current_user):
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return jsonify({
-        'grocery_items': [g.to_dict() for g in items],
+        'grocery_items': [{**g.to_dict(), 'email': g.email} for g in items],
         'total': total, 'page': page, 'per_page': per_page,
     })
 
@@ -696,3 +696,111 @@ def delete_grocery_item(current_user, item_id):
     db.session.delete(g)
     db.session.commit()
     return jsonify({'message': 'Grocery item deleted.'})
+
+
+# ── Content Moderation (Meal Scans) ────────────────────────────────────
+
+@admin_bp.route('/meal-scans', methods=['GET'])
+@require_admin
+def list_meal_scans(current_user):
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 20, type=int), 100)
+    q = MealScan.query.order_by(MealScan.created_at.desc())
+    total = q.count()
+    items = q.offset((page - 1) * per_page).limit(per_page).all()
+    return jsonify({
+        'meal_scans': [{**s.to_dict(), 'email': s.email} for s in items],
+        'total': total, 'page': page, 'per_page': per_page,
+    })
+
+
+@admin_bp.route('/meal-scans/<int:scan_id>', methods=['DELETE'])
+@require_admin
+def delete_meal_scan(current_user, scan_id):
+    s = MealScan.query.get(scan_id)
+    if not s:
+        return jsonify({'error': 'Meal scan not found.'}), 404
+    db.session.delete(s)
+    db.session.commit()
+    return jsonify({'message': 'Meal scan deleted.'})
+
+
+# ── Content Moderation (Weekly Calendar) ────────────────────────────────
+
+@admin_bp.route('/weekly-calendar', methods=['GET'])
+@require_admin
+def list_weekly_calendar(current_user):
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 20, type=int), 100)
+    q = WeeklyCalendar.query.order_by(WeeklyCalendar.created_at.desc())
+    total = q.count()
+    items = q.offset((page - 1) * per_page).limit(per_page).all()
+    return jsonify({
+        'calendar_entries': [{**c.to_dict(), 'email': c.email} for c in items],
+        'total': total, 'page': page, 'per_page': per_page,
+    })
+
+
+@admin_bp.route('/weekly-calendar/<int:entry_id>', methods=['DELETE'])
+@require_admin
+def delete_weekly_calendar(current_user, entry_id):
+    c = WeeklyCalendar.query.get(entry_id)
+    if not c:
+        return jsonify({'error': 'Calendar entry not found.'}), 404
+    db.session.delete(c)
+    db.session.commit()
+    return jsonify({'message': 'Calendar entry deleted.'})
+
+
+# ── Content Moderation (Password Reset Codes) ──────────────────────────
+
+@admin_bp.route('/password-reset-codes', methods=['GET'])
+@require_admin
+def list_password_reset_codes(current_user):
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 20, type=int), 100)
+    q = PasswordResetCode.query.order_by(PasswordResetCode.created_at.desc())
+    total = q.count()
+    items = q.offset((page - 1) * per_page).limit(per_page).all()
+    return jsonify({
+        'reset_codes': [r.to_dict() for r in items],
+        'total': total, 'page': page, 'per_page': per_page,
+    })
+
+
+@admin_bp.route('/password-reset-codes/<int:code_id>', methods=['DELETE'])
+@require_admin
+def delete_password_reset_code(current_user, code_id):
+    r = PasswordResetCode.query.get(code_id)
+    if not r:
+        return jsonify({'error': 'Reset code not found.'}), 404
+    db.session.delete(r)
+    db.session.commit()
+    return jsonify({'message': 'Reset code deleted.'})
+
+
+# ── Content Moderation (Onboarding Details) ────────────────────────────
+
+@admin_bp.route('/onboarding-details', methods=['GET'])
+@require_admin
+def list_onboarding_details(current_user):
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 20, type=int), 100)
+    q = OnboardingDetail.query.order_by(OnboardingDetail.created_at.desc())
+    total = q.count()
+    items = q.offset((page - 1) * per_page).limit(per_page).all()
+    return jsonify({
+        'onboarding_details': [o.to_dict() for o in items],
+        'total': total, 'page': page, 'per_page': per_page,
+    })
+
+
+@admin_bp.route('/onboarding-details/<int:detail_id>', methods=['DELETE'])
+@require_admin
+def delete_onboarding_detail(current_user, detail_id):
+    o = OnboardingDetail.query.get(detail_id)
+    if not o:
+        return jsonify({'error': 'Onboarding detail not found.'}), 404
+    db.session.delete(o)
+    db.session.commit()
+    return jsonify({'message': 'Onboarding detail deleted.'})
