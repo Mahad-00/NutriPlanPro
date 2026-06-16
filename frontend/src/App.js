@@ -36,6 +36,18 @@ import Settings from './src/screen/dashboard/Settings';
 import AdminOverview from './src/screen/admin/AdminOverview';
 import AdminUsers from './src/screen/admin/AdminUsers';
 import AdminContactMessages from './src/screen/admin/AdminContactMessages';
+import AdminRecipes from './src/screen/admin/AdminRecipes';
+import AdminCustomFoods from './src/screen/admin/AdminCustomFoods';
+import AdminBarcodeFoods from './src/screen/admin/AdminBarcodeFoods';
+import AdminFoodDiary from './src/screen/admin/AdminFoodDiary';
+import AdminMealPlans from './src/screen/admin/AdminMealPlans';
+import AdminWaterLogs from './src/screen/admin/AdminWaterLogs';
+import AdminProgressEntries from './src/screen/admin/AdminProgressEntries';
+import AdminWorkoutLogs from './src/screen/admin/AdminWorkoutLogs';
+import AdminWorkoutRoutines from './src/screen/admin/AdminWorkoutRoutines';
+import AdminDietRecommendations from './src/screen/admin/AdminDietRecommendations';
+import AdminGoals from './src/screen/admin/AdminGoals';
+import AdminGroceryItems from './src/screen/admin/AdminGroceryItems';
 
 
 const stats = [
@@ -84,6 +96,18 @@ function App() {
         <Route path="/admin" element={<ProtectedRoute><AdminOverview /></ProtectedRoute>} />
         <Route path="/admin/users" element={<ProtectedRoute><AdminUsers /></ProtectedRoute>} />
         <Route path="/admin/contact-messages" element={<ProtectedRoute><AdminContactMessages /></ProtectedRoute>} />
+        <Route path="/admin/recipes" element={<ProtectedRoute><AdminRecipes /></ProtectedRoute>} />
+        <Route path="/admin/custom-foods" element={<ProtectedRoute><AdminCustomFoods /></ProtectedRoute>} />
+        <Route path="/admin/barcode-foods" element={<ProtectedRoute><AdminBarcodeFoods /></ProtectedRoute>} />
+        <Route path="/admin/food-diary" element={<ProtectedRoute><AdminFoodDiary /></ProtectedRoute>} />
+        <Route path="/admin/meal-plans" element={<ProtectedRoute><AdminMealPlans /></ProtectedRoute>} />
+        <Route path="/admin/water-logs" element={<ProtectedRoute><AdminWaterLogs /></ProtectedRoute>} />
+        <Route path="/admin/progress-entries" element={<ProtectedRoute><AdminProgressEntries /></ProtectedRoute>} />
+        <Route path="/admin/workout-logs" element={<ProtectedRoute><AdminWorkoutLogs /></ProtectedRoute>} />
+        <Route path="/admin/workout-routines" element={<ProtectedRoute><AdminWorkoutRoutines /></ProtectedRoute>} />
+        <Route path="/admin/diet-recommendations" element={<ProtectedRoute><AdminDietRecommendations /></ProtectedRoute>} />
+        <Route path="/admin/goals" element={<ProtectedRoute><AdminGoals /></ProtectedRoute>} />
+        <Route path="/admin/grocery-items" element={<ProtectedRoute><AdminGroceryItems /></ProtectedRoute>} />
 
       </Routes>
     </HashRouter>

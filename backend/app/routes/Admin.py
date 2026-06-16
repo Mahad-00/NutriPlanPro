@@ -453,3 +453,246 @@ def delete_barcode_food(current_user, food_id):
     db.session.delete(f)
     db.session.commit()
     return jsonify({'message': 'Barcode food deleted.'})
+
+
+# ── Content Moderation (Food Diary) ─────────────────────────────────────
+
+@admin_bp.route('/food-diary', methods=['GET'])
+@require_admin
+def list_food_diary(current_user):
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 20, type=int), 100)
+    q = FoodDiaryEntry.query.order_by(FoodDiaryEntry.created_at.desc())
+    total = q.count()
+    items = q.offset((page - 1) * per_page).limit(per_page).all()
+    return jsonify({
+        'entries': [e.to_dict() for e in items],
+        'total': total, 'page': page, 'per_page': per_page,
+    })
+
+
+@admin_bp.route('/food-diary/<int:entry_id>', methods=['DELETE'])
+@require_admin
+def delete_food_diary(current_user, entry_id):
+    e = FoodDiaryEntry.query.get(entry_id)
+    if not e:
+        return jsonify({'error': 'Entry not found.'}), 404
+    db.session.delete(e)
+    db.session.commit()
+    return jsonify({'message': 'Food diary entry deleted.'})
+
+
+# ── Content Moderation (Meal Plans) ─────────────────────────────────────
+
+@admin_bp.route('/meal-plans', methods=['GET'])
+@require_admin
+def list_meal_plans(current_user):
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 20, type=int), 100)
+    q = MealPlan.query.order_by(MealPlan.created_at.desc())
+    total = q.count()
+    items = q.offset((page - 1) * per_page).limit(per_page).all()
+    return jsonify({
+        'meal_plans': [m.to_dict() for m in items],
+        'total': total, 'page': page, 'per_page': per_page,
+    })
+
+
+@admin_bp.route('/meal-plans/<int:plan_id>', methods=['DELETE'])
+@require_admin
+def delete_meal_plan(current_user, plan_id):
+    m = MealPlan.query.get(plan_id)
+    if not m:
+        return jsonify({'error': 'Meal plan not found.'}), 404
+    db.session.delete(m)
+    db.session.commit()
+    return jsonify({'message': 'Meal plan deleted.'})
+
+
+# ── Content Moderation (Water Logs) ─────────────────────────────────────
+
+@admin_bp.route('/water-logs', methods=['GET'])
+@require_admin
+def list_water_logs(current_user):
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 20, type=int), 100)
+    q = WaterLog.query.order_by(WaterLog.created_at.desc())
+    total = q.count()
+    items = q.offset((page - 1) * per_page).limit(per_page).all()
+    return jsonify({
+        'water_logs': [w.to_dict() for w in items],
+        'total': total, 'page': page, 'per_page': per_page,
+    })
+
+
+@admin_bp.route('/water-logs/<int:log_id>', methods=['DELETE'])
+@require_admin
+def delete_water_log(current_user, log_id):
+    w = WaterLog.query.get(log_id)
+    if not w:
+        return jsonify({'error': 'Water log not found.'}), 404
+    db.session.delete(w)
+    db.session.commit()
+    return jsonify({'message': 'Water log deleted.'})
+
+
+# ── Content Moderation (Progress Entries) ───────────────────────────────
+
+@admin_bp.route('/progress-entries', methods=['GET'])
+@require_admin
+def list_progress_entries(current_user):
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 20, type=int), 100)
+    q = ProgressEntry.query.order_by(ProgressEntry.created_at.desc())
+    total = q.count()
+    items = q.offset((page - 1) * per_page).limit(per_page).all()
+    return jsonify({
+        'progress_entries': [p.to_dict() for p in items],
+        'total': total, 'page': page, 'per_page': per_page,
+    })
+
+
+@admin_bp.route('/progress-entries/<int:entry_id>', methods=['DELETE'])
+@require_admin
+def delete_progress_entry(current_user, entry_id):
+    p = ProgressEntry.query.get(entry_id)
+    if not p:
+        return jsonify({'error': 'Progress entry not found.'}), 404
+    db.session.delete(p)
+    db.session.commit()
+    return jsonify({'message': 'Progress entry deleted.'})
+
+
+# ── Content Moderation (Workout Logs) ───────────────────────────────────
+
+@admin_bp.route('/workout-logs', methods=['GET'])
+@require_admin
+def list_workout_logs(current_user):
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 20, type=int), 100)
+    q = WorkoutLog.query.order_by(WorkoutLog.created_at.desc())
+    total = q.count()
+    items = q.offset((page - 1) * per_page).limit(per_page).all()
+    return jsonify({
+        'workout_logs': [l.to_dict() for l in items],
+        'total': total, 'page': page, 'per_page': per_page,
+    })
+
+
+@admin_bp.route('/workout-logs/<int:log_id>', methods=['DELETE'])
+@require_admin
+def delete_workout_log(current_user, log_id):
+    l = WorkoutLog.query.get(log_id)
+    if not l:
+        return jsonify({'error': 'Workout log not found.'}), 404
+    db.session.delete(l)
+    db.session.commit()
+    return jsonify({'message': 'Workout log deleted.'})
+
+
+# ── Content Moderation (Workout Routines) ───────────────────────────────
+
+@admin_bp.route('/workout-routines', methods=['GET'])
+@require_admin
+def list_workout_routines(current_user):
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 20, type=int), 100)
+    q = WorkoutRoutine.query.order_by(WorkoutRoutine.created_at.desc())
+    total = q.count()
+    items = q.offset((page - 1) * per_page).limit(per_page).all()
+    return jsonify({
+        'workout_routines': [r.to_dict() for r in items],
+        'total': total, 'page': page, 'per_page': per_page,
+    })
+
+
+@admin_bp.route('/workout-routines/<int:routine_id>', methods=['DELETE'])
+@require_admin
+def delete_workout_routine(current_user, routine_id):
+    r = WorkoutRoutine.query.get(routine_id)
+    if not r:
+        return jsonify({'error': 'Workout routine not found.'}), 404
+    db.session.delete(r)
+    db.session.commit()
+    return jsonify({'message': 'Workout routine deleted.'})
+
+
+# ── Content Moderation (Diet Recommendations) ───────────────────────────
+
+@admin_bp.route('/diet-recommendations', methods=['GET'])
+@require_admin
+def list_diet_recommendations(current_user):
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 20, type=int), 100)
+    q = DietRecommendation.query.order_by(DietRecommendation.created_at.desc())
+    total = q.count()
+    items = q.offset((page - 1) * per_page).limit(per_page).all()
+    return jsonify({
+        'diet_recommendations': [d.to_dict() for d in items],
+        'total': total, 'page': page, 'per_page': per_page,
+    })
+
+
+@admin_bp.route('/diet-recommendations/<int:rec_id>', methods=['DELETE'])
+@require_admin
+def delete_diet_recommendation(current_user, rec_id):
+    d = DietRecommendation.query.get(rec_id)
+    if not d:
+        return jsonify({'error': 'Diet recommendation not found.'}), 404
+    db.session.delete(d)
+    db.session.commit()
+    return jsonify({'message': 'Diet recommendation deleted.'})
+
+
+# ── Content Moderation (Goals) ──────────────────────────────────────────
+
+@admin_bp.route('/goals', methods=['GET'])
+@require_admin
+def list_goals(current_user):
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 20, type=int), 100)
+    q = Goal.query.order_by(Goal.created_at.desc())
+    total = q.count()
+    items = q.offset((page - 1) * per_page).limit(per_page).all()
+    return jsonify({
+        'goals': [g.to_dict() for g in items],
+        'total': total, 'page': page, 'per_page': per_page,
+    })
+
+
+@admin_bp.route('/goals/<int:goal_id>', methods=['DELETE'])
+@require_admin
+def delete_goal(current_user, goal_id):
+    g = Goal.query.get(goal_id)
+    if not g:
+        return jsonify({'error': 'Goal not found.'}), 404
+    db.session.delete(g)
+    db.session.commit()
+    return jsonify({'message': 'Goal deleted.'})
+
+
+# ── Content Moderation (Grocery Items) ──────────────────────────────────
+
+@admin_bp.route('/grocery-items', methods=['GET'])
+@require_admin
+def list_grocery_items(current_user):
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 20, type=int), 100)
+    q = GroceryItem.query.order_by(GroceryItem.created_at.desc())
+    total = q.count()
+    items = q.offset((page - 1) * per_page).limit(per_page).all()
+    return jsonify({
+        'grocery_items': [g.to_dict() for g in items],
+        'total': total, 'page': page, 'per_page': per_page,
+    })
+
+
+@admin_bp.route('/grocery-items/<int:item_id>', methods=['DELETE'])
+@require_admin
+def delete_grocery_item(current_user, item_id):
+    g = GroceryItem.query.get(item_id)
+    if not g:
+        return jsonify({'error': 'Grocery item not found.'}), 404
+    db.session.delete(g)
+    db.session.commit()
+    return jsonify({'message': 'Grocery item deleted.'})

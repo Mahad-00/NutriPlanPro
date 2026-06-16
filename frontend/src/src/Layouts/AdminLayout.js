@@ -1,11 +1,27 @@
 import { Link, useLocation, Navigate } from 'react-router-dom';
-import { LayoutDashboard, Users, MessageSquare, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, MessageSquare, LogOut, Utensils, Apple, Barcode, ClipboardList, Calendar, Droplets, TrendingUp, Dumbbell, ListOrdered, Lightbulb, Target, ShoppingCart } from 'lucide-react';
 import BrandLogo from '../componenets/BrandLogo';
 
 const nav = [
     { to: '/admin', label: 'Overview', icon: LayoutDashboard },
     { to: '/admin/users', label: 'Users', icon: Users },
+    { divider: true },
     { to: '/admin/contact-messages', label: 'Contact Messages', icon: MessageSquare },
+    { to: '/admin/recipes', label: 'Recipes', icon: Utensils },
+    { to: '/admin/custom-foods', label: 'Custom Foods', icon: Apple },
+    { to: '/admin/barcode-foods', label: 'Barcode Foods', icon: Barcode },
+    { divider: true },
+    { to: '/admin/food-diary', label: 'Food Diary', icon: ClipboardList },
+    { to: '/admin/meal-plans', label: 'Meal Plans', icon: Calendar },
+    { to: '/admin/water-logs', label: 'Water Logs', icon: Droplets },
+    { to: '/admin/progress-entries', label: 'Progress', icon: TrendingUp },
+    { divider: true },
+    { to: '/admin/workout-logs', label: 'Workout Logs', icon: Dumbbell },
+    { to: '/admin/workout-routines', label: 'Workout Routines', icon: ListOrdered },
+    { divider: true },
+    { to: '/admin/diet-recommendations', label: 'Diet Recommendations', icon: Lightbulb },
+    { to: '/admin/goals', label: 'Goals', icon: Target },
+    { to: '/admin/grocery-items', label: 'Grocery Items', icon: ShoppingCart },
 ];
 
 export default function AdminLayout({ children }) {
@@ -37,7 +53,11 @@ export default function AdminLayout({ children }) {
                     </Link>
                 </div>
                 <nav style={{ flex: 1, padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.125rem', overflowY: 'auto' }}>
-                    {nav.map(({ to, label, icon: Icon }) => {
+                    {nav.map((item) => {
+                        if (item.divider) {
+                            return <div key={Math.random()} style={{ height: 1, background: '#e2e8f0', margin: '0.375rem 0.5rem' }} />;
+                        }
+                        const { to, label, icon: Icon } = item;
                         const active = location.pathname === to || (to !== '/admin' && location.pathname.startsWith(to));
                         return (
                             <Link
